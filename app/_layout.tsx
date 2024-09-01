@@ -1,5 +1,21 @@
-import { Stack } from 'expo-router';
+import { Href, Stack, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 
 export default function Layout() {
-  return <Stack />;
+  const [initialRoute, setInitialRoute] = useState<Href<string | object>>('/(store)');
+  const router = useRouter();
+
+  useEffect(() => {
+    return router.replace(initialRoute);
+  }, [initialRoute]);
+
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Stack.Screen name="(supplier)" />
+      <Stack.Screen name="(store)" />
+    </Stack>
+  );
 }
