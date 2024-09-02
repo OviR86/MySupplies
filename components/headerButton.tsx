@@ -1,16 +1,19 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { FontAwesome } from '@expo/vector-icons';
-import { Colors } from '~/assets/colors';
+
+type IconName = keyof typeof FontAwesome.glyphMap;
 
 type Props = {
   onPress: () => void;
+  name: IconName;
+  color: string;
 };
 
-const HeaderButton = ({ onPress }: Props) => {
+const HeaderButton = ({ onPress, name, color }: Props) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      <FontAwesome name="shopping-basket" size={24} color={Colors.purpleMid} />
+      <FontAwesome name={name} size={24} color={color} />
     </TouchableOpacity>
   );
 };

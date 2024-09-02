@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import { StyleSheet, Text } from 'react-native';
+import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Colors } from '~/assets/colors';
 
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     minWidth: 100,
     marginHorizontal: 10,
+    marginTop: 5,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -46,7 +47,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
-
     elevation: 7,
   },
   selectedContainer: {

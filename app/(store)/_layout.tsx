@@ -1,6 +1,6 @@
 import { useRouter, Stack } from 'expo-router';
-import { TouchableOpacity, View } from 'react-native';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { View } from 'react-native';
+import { Colors } from '~/assets/colors';
 import HeaderButton from '~/components/headerButton';
 
 export default function Layout() {
@@ -11,7 +11,20 @@ export default function Layout() {
         name="index"
         options={{
           title: 'Produse',
-          headerRight: () => <HeaderButton onPress={() => router.push('/basket')} />,
+          headerRight: () => (
+            <View style={{ flexDirection: 'row', gap: 30 }}>
+              <HeaderButton
+                onPress={() => router.push('/basket')}
+                name="user-circle"
+                color="#b9b7bd"
+              />
+              <HeaderButton
+                onPress={() => router.push('/basket')}
+                name="shopping-basket"
+                color={Colors.purpleMid}
+              />
+            </View>
+          ),
         }}
       />
       <Stack.Screen
