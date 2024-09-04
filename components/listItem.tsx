@@ -1,7 +1,9 @@
-import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React from 'react';
+import { Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native';
+import React, { useRef } from 'react';
 import { Dimensions } from 'react-native';
 import GeneralButton from './generalbutton';
+import BottomSheet from './bottomSheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -21,12 +23,16 @@ type ListItemType = {
 };
 
 const ListItem = (props: ListItemType) => {
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+
   const handlePress = (title: string | undefined) => {
-    alert(`Pressed: ${title}`);
+    // alert(`Pressed: ${title}`);
+    bottomSheetRef.current?.present();
   };
 
   return (
     <View style={styles.container}>
+      <BottomSheet ref={bottomSheetRef} />
       <Image source={props.image} style={styles.image} />
       <Text numberOfLines={2} style={styles.titleText}>
         {props.title}
