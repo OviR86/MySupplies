@@ -32,6 +32,7 @@ export default function Layout() {
       <Stack.Screen
         name="basket"
         options={{
+          headerShown: false,
           title: 'Checkout',
           presentation: 'modal',
         }}

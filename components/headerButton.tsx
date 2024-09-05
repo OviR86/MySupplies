@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import React from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -9,11 +9,12 @@ type Props = {
   name: IconName;
   color: string;
   size: number;
+  style?: StyleProp<ViewStyle>;
 };
 
-const HeaderButton = ({ onPress, name, color, size }: Props) => {
+const HeaderButton = ({ onPress, name, color, size, style }: Props) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} style={style}>
       <FontAwesome name={name} size={size} color={color} />
     </TouchableOpacity>
   );

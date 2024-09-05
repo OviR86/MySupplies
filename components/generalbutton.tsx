@@ -1,16 +1,18 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 import React from 'react';
 import { Colors } from '~/assets/colors';
 
 export type GeneralButtontype = {
   title: string;
   OnPress: () => void;
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
 };
 
 const GeneralButton = (props: GeneralButtontype) => {
   return (
-    <TouchableOpacity onPress={props.OnPress} style={styles.container}>
-      <Text style={styles.text}>{props.title}</Text>
+    <TouchableOpacity onPress={props.OnPress} style={[styles.container, props.style]}>
+      <Text style={[styles.text, props.textStyle]}>{props.title}</Text>
     </TouchableOpacity>
   );
 };
@@ -24,7 +26,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 50,
-    width: 70,
+    minWidth: 70,
     marginHorizontal: 10,
     marginTop: 5,
     shadowColor: '#000',

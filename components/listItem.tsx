@@ -4,6 +4,7 @@ import { Dimensions } from 'react-native';
 import GeneralButton from './generalbutton';
 import BottomSheet from './bottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { Colors } from '~/assets/colors';
 
 const screenWidth = Dimensions.get('window').width;
 

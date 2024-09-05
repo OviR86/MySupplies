@@ -24,7 +24,10 @@ const Index = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Select supply category</Text>
-      <ScrollView horizontal style={{ height: 60, marginBottom: 10 }}>
+      <ScrollView
+        horizontal
+        style={{ height: 60, marginBottom: 10 }}
+        showsHorizontalScrollIndicator={false}>
         {uniqueCategories.map((category, index) => {
           return (
             <CategoryButton
