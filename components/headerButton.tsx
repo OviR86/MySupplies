@@ -8,12 +8,13 @@ type Props = {
   onPress: () => void;
   name: IconName;
   color: string;
+  size: number;
 };
 
-const HeaderButton = ({ onPress, name, color }: Props) => {
+const HeaderButton = ({ onPress, name, color, size }: Props) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      <FontAwesome name={name} size={24} color={color} />
+      <FontAwesome name={name} size={size} color={color} />
     </TouchableOpacity>
   );
 };

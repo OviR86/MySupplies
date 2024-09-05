@@ -17,11 +17,13 @@ export default function Layout() {
                 onPress={() => router.push('/basket')}
                 name="user-circle"
                 color="#b9b7bd"
+                size={24}
               />
               <HeaderButton
                 onPress={() => router.push('/basket')}
                 name="shopping-basket"
                 color={Colors.purpleMid}
+                size={24}
               />
             </View>
           ),
