@@ -1,13 +1,17 @@
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { products } from '~/assets/data';
 import ListItem from '~/components/listItem';
 import CategoryButton from '~/components/categoryButton';
 import { Colors } from '~/assets/colors';
 
-const uniqueCategories = [...new Set(products.map((product) => product.category))];
+import PocketBase, { RecordModel } from 'pocketbase';
+
+const url = 'https://bound-lesson.pockethost.io/';
+const client = new PocketBase(url);
 
 const Index = () => {
+  const [suplyList, setSuplyList] = useState<RecordModel[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const handlecategoryPress = (category: string) => {
     if (selectedCategory == category) {
@@ -17,9 +21,30 @@ const Index = () => {
     }
   };
 
+  const uniqueCategories = [...new Set(suplyList.map((product) => product.category))];
+
   const filterredProducts = selectedCategory
-    ? products.filter((product) => product.category === selectedCategory)
-    : products;
+    ? suplyList.filter((product) => product.category === selectedCategory)
+    : suplyList;
+
+  //LIST FROM POCKETBASE DB
+  const getSupplyList = async () => {
+    try {
+      const records = await client.collection('supplies').getFullList({
+        sort: '-category',
+      });
+      // console.log('CONSUMABILE===>', JSON.stringify(records, null, 2));
+      setSuplyList(records);
+    } catch (error) {
+      alert(`eroare consumabile: ${error}`);
+    } finally {
+      console.log('SUPLY LISYT', JSON.stringify(suplyList, null, 2));
+    }
+  };
+
+  useEffect(() => {
+    getSupplyList();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -53,7 +78,7 @@ const Index = () => {
         data={filterredProducts}
         keyExtractor={(item) => item.id.toString()}
         renderItem={(item) => {
-          return <ListItem title={item.item.title} image={{ uri: item.item.image }} />;
+          return <ListItem title={item.item.name} image={{ uri: item.item.image }} />;
         }}
         showsVerticalScrollIndicator={false}
       />

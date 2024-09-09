@@ -8,7 +8,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import HeaderButton from './headerButton';
 import { Colors } from '~/assets/colors';
-import GeneralButton from './generalbutton';
+import GeneralButton from './generalButton';
 
 const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
   const [quantity, setQuantity] = useState(0);

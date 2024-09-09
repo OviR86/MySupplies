@@ -287,3 +287,47 @@ export const products = [
     },
   },
 ];
+
+export const cartContent = [
+  {
+    id: 1,
+    title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
+    quantity: 109,
+    supplier: 'fan courier',
+    image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
+  },
+  {
+    id: 2,
+    title: 'Mens Casual Premium Slim Fit T-Shirts ',
+    quantity: 22,
+    supplier: 'depozit',
+    image: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
+  },
+  {
+    id: 3,
+    title: 'Mens Cotton Jacket',
+    quantity: 55,
+    image: 'https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg',
+  },
+  {
+    id: 4,
+    title: 'Mens Casual Slim Fit',
+    quantity: 15,
+    supplier: 'depozit',
+    image: 'https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg',
+  },
+  {
+    id: 5,
+    title: "John Hardy Women's Legends Naga Gold & Silver Dragon Station Chain Bracelet",
+    quantity: 695,
+    supplier: 'online',
+    image: 'https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg',
+  },
+  {
+    id: 6,
+    title: 'Solid Gold Petite Micropave ',
+    quantity: 168,
+    supplier: 'contabilitate',
+    image: 'https://fakestoreapi.com/img/61sbMiUnoGL._AC_UL640_QL65_ML3_.jpg',
+  },
+];

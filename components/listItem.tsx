@@ -1,7 +1,7 @@
 import { Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native';
 import React, { useRef } from 'react';
 import { Dimensions } from 'react-native';
-import GeneralButton from './generalbutton';
+import GeneralButton from './generalButton';
 import BottomSheet from './bottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Colors } from '~/assets/colors';

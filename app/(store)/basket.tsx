@@ -3,7 +3,8 @@ import React from 'react';
 import { useRouter } from 'expo-router';
 import HeaderButton from '~/components/headerButton';
 import { Colors } from '~/assets/colors';
-import GeneralButton from '~/components/generalbutton';
+import CartItem from '~/components/cartItem';
+import GeneralButton from '~/components/generalButton';
 
 const Basket = () => {
   const router = useRouter();
@@ -20,6 +21,8 @@ const Basket = () => {
         />
         <Text style={{ fontSize: 27, fontWeight: '300' }}>Cart</Text>
       </View>
+      <CartItem />
+
       <View style={styles.summaryContainer}>
         <Text style={{ fontWeight: '600', fontSize: 20, alignSelf: 'flex-start' }}>
           Order Summary
@@ -75,7 +78,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 15,
+    marginVertical: 15,
   },
   backButton: {
     position: 'absolute',
