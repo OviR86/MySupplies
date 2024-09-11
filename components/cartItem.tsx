@@ -24,7 +24,7 @@ const CartItem = () => {
   };
 
   return (
-    <View style={[styles.container, customElevation]}>
+    <View style={[styles.container]}>
       <Image
         source={{ uri: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg' }}
         style={{ height: 70, width: 70, overflow: 'hidden' }}
@@ -85,7 +85,7 @@ export default CartItem;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    width: '90%',
+    width: '100%',
     height: 90,
     paddingHorizontal: 4,
     borderRadius: 7,

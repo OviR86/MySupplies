@@ -47,11 +47,25 @@ const ListItem = (props: ListItemType) => {
     <View style={[styles.container, customElevation]}>
       <BottomSheet ref={bottomSheetRef} />
       <Image source={props.image} style={styles.image} />
-      <View style={{ backgroundColor: '#eaeaea', width: '100%' }}>
-        <Text numberOfLines={2} style={styles.titleText}>
-          {capitalise(props.title)}
-        </Text>
-        <GeneralButton OnPress={() => handlePress(props.title)} title="Order" />
+      <View
+        style={{
+          backgroundColor: '#f6f5f6',
+          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <View
+          style={{
+            height: 100,
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingVertical: 15,
+          }}>
+          <Text numberOfLines={2} style={styles.titleText}>
+            {capitalise(props.title)}
+          </Text>
+          <GeneralButton OnPress={() => handlePress(props.title)} title="Order" />
+        </View>
       </View>
     </View>
   );
@@ -61,22 +75,25 @@ export default ListItem;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: '#f6f5f6',
     width: screenWidth / 2.1,
+    height: 280,
     marginVertical: 20,
     marginHorizontal: 3,
     alignItems: 'center',
-    borderColor: '#eaeaea',
-    borderWidth: 0.5,
+    borderColor: '#f6f5f6',
+    borderWidth: 1,
     borderRadius: 7,
+    overflow: 'hidden',
   },
   image: {
-    width: 150,
-    height: 150,
-    resizeMode: 'contain',
+    width: '100%',
+    height: 180,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 15,
   },
   titleText: {
     paddingHorizontal: 10,
-    fontSize: 18,
+    fontSize: 16,
   },
 });

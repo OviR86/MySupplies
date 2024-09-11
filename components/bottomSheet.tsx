@@ -61,7 +61,7 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
           <View style={styles.selectorButtonsContainer}>
             <HeaderButton
               name="minus-circle"
-              color={quantity == 0 ? '#D3D3D3' : Colors.purpleMid}
+              color={quantity == 0 ? Colors.inactiveGray : Colors.purpleMid}
               onPress={decreaseQuantity}
               size={40}
             />

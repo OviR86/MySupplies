@@ -14,9 +14,9 @@ export default function Layout() {
           headerRight: () => (
             <View style={{ flexDirection: 'row', gap: 30 }}>
               <HeaderButton
-                onPress={() => router.push('/basket')}
+                onPress={() => router.push('/user')}
                 name="user-circle"
-                color="#b9b7bd"
+                color={Colors.inactiveGray}
                 size={24}
               />
               <HeaderButton
@@ -34,6 +34,14 @@ export default function Layout() {
         options={{
           headerShown: false,
           title: 'Checkout',
+          presentation: 'modal',
+        }}
+      />
+      <Stack.Screen
+        name="user"
+        options={{
+          headerShown: false,
+          title: 'User',
           presentation: 'modal',
         }}
       />

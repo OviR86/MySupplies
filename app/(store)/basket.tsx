@@ -5,6 +5,7 @@ import HeaderButton from '~/components/headerButton';
 import { Colors } from '~/assets/colors';
 import CartItem from '~/components/cartItem';
 import GeneralButton from '~/components/generalButton';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Basket = () => {
   const router = useRouter();
@@ -21,10 +22,38 @@ const Basket = () => {
         />
         <Text style={{ fontSize: 27, fontWeight: '300' }}>Cart</Text>
       </View>
-      <CartItem />
+      <View style={styles.cartItemsContainer}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            alignItems: 'center',
+            gap: 10,
+            width: '100%',
+            padding: 7,
+          }}>
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
+        </ScrollView>
+      </View>
 
       <View style={styles.summaryContainer}>
-        <Text style={{ fontWeight: '600', fontSize: 20, alignSelf: 'flex-start' }}>
+        <Text
+          style={{
+            fontWeight: '600',
+            fontSize: 20,
+            alignSelf: 'flex-start',
+            marginBottom: 5,
+          }}>
           Order Summary
         </Text>
 
@@ -56,7 +85,7 @@ const Basket = () => {
         </View>
         <GeneralButton
           title="Send order"
-          style={{ width: '100%', height: 40, borderRadius: 7 }}
+          style={{ width: '90%', height: 40, borderRadius: 7 }}
           textStyle={{ fontSize: 20, fontWeight: 'bold' }}
           OnPress={() => alert('Checkout')}
         />
@@ -80,25 +109,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: 15,
   },
+  cartItemsContainer: {
+    // backgroundColor: 'yellow',
+    width: '100%',
+    flex: 3.2,
+    marginBottom: 10,
+    alignItems: 'center',
+  },
   backButton: {
     position: 'absolute',
     left: 30,
   },
   summaryContainer: {
-    gap: 20,
-    position: 'absolute',
-    bottom: 20,
+    flex: 1.9,
+    // position: 'absolute',
+    // bottom: 20,
     alignItems: 'center',
-    width: '90%',
+    width: '100%',
+    paddingHorizontal: 7,
   },
   summaryDescription: {
     minHeight: 100,
     width: '100%',
     backgroundColor: 'white',
     borderRadius: 7,
-    paddingHorizontal: 15,
+    paddingHorizontal: 5,
     paddingVertical: 5,
     gap: 7,
+    marginBottom: 5,
   },
   summaryItem: {
     flexDirection: 'row',
