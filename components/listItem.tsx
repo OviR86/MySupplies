@@ -5,6 +5,7 @@ import GeneralButton from './generalButton';
 import BottomSheet from './bottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Colors } from '~/assets/colors';
+import { customElevation } from '~/assets/styles';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -31,14 +32,27 @@ const ListItem = (props: ListItemType) => {
     bottomSheetRef.current?.present();
   };
 
+  const capitalise = (str: string | undefined) => {
+    if (str != undefined) {
+      return str
+        .split(' ')
+        .map((word) => {
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        })
+        .join(' ');
+    } else return;
+  };
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, customElevation]}>
       <BottomSheet ref={bottomSheetRef} />
       <Image source={props.image} style={styles.image} />
-      <Text numberOfLines={2} style={styles.titleText}>
-        {props.title}
-      </Text>
-      <GeneralButton OnPress={() => handlePress(props.title)} title="Order" />
+      <View style={{ backgroundColor: '#eaeaea', width: '100%' }}>
+        <Text numberOfLines={2} style={styles.titleText}>
+          {capitalise(props.title)}
+        </Text>
+        <GeneralButton OnPress={() => handlePress(props.title)} title="Order" />
+      </View>
     </View>
   );
 };
@@ -47,9 +61,14 @@ export default ListItem;
 
 const styles = StyleSheet.create({
   container: {
-    width: screenWidth / 2,
+    backgroundColor: 'white',
+    width: screenWidth / 2.1,
     marginVertical: 20,
+    marginHorizontal: 3,
     alignItems: 'center',
+    borderColor: '#eaeaea',
+    borderWidth: 0.5,
+    borderRadius: 7,
   },
   image: {
     width: 150,
@@ -58,5 +77,6 @@ const styles = StyleSheet.create({
   },
   titleText: {
     paddingHorizontal: 10,
+    fontSize: 18,
   },
 });
