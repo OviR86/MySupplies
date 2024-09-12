@@ -8,7 +8,6 @@ const CartItem = () => {
   const [quantity, setQuantity] = useState(0);
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
-    console.log('Plus');
   };
   const decreaseQuantity = () => {
     if (quantity <= 0) {
@@ -16,7 +15,6 @@ const CartItem = () => {
     } else {
       setQuantity(quantity - 1);
     }
-    console.log('Minus');
   };
 
   const deleteItem = () => {

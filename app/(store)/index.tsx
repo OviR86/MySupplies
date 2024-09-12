@@ -1,4 +1,12 @@
-import { ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { products } from '~/assets/data'; //KEEP IT JUST IN CASE
 import ListItem from '~/components/listItem';
@@ -9,6 +17,7 @@ import PocketBase, { RecordModel } from 'pocketbase';
 
 const url = 'https://bound-lesson.pockethost.io/';
 const client = new PocketBase(url);
+client.autoCancellation(false);
 
 const Index = () => {
   const [suplyList, setSuplyList] = useState<RecordModel[]>([]);
@@ -24,31 +33,32 @@ const Index = () => {
     }
   };
 
-  const uniqueCategories = [...new Set(suplyList.map((product) => product.category))];
-
   //GET LIST FROM POCKETBASE DB
+  useEffect(() => {
+    setLoading(true);
+    getSupplyList();
+  }, []);
+
   const getSupplyList = async () => {
     try {
-      setLoading(true);
       const records = await client.collection('supplies').getFullList({
         sort: '-category',
       });
       // console.log('CONSUMABILE===>', JSON.stringify(records, null, 2));
       setSuplyList(records);
       setLoading(false);
-    } catch (error) {
-      alert(`Unable to retrieve supplies: ${error}`);
+    } catch (error: any) {
+      alert(error);
     }
   };
+
+  //CREATE AN ARRAY OF CATEGORIES TO BE DISPLAYED WITH CATEGORY BUTTONS IN THE FILTER FUNCTIONALITY
+  const uniqueCategories = [...new Set(suplyList.map((product) => product.category))];
 
   //CREATE IMAGE URL FOR POCKETBASE STORRED IMAGES
   const buildImageURL = (fileName: string, collectionId: string, itemId: string) => {
     return `${url}api/files/${collectionId}/${itemId}/${fileName}`;
   };
-
-  useEffect(() => {
-    getSupplyList();
-  }, []);
 
   //CREATE A NEW SUPPLIES LIST CONTAINING IMAGES WITH VALID URL'S
   const mappedSupplies = suplyList.map((suply) => ({
@@ -100,7 +110,13 @@ const Index = () => {
             data={filterredProducts}
             keyExtractor={(item) => item.id.toString()}
             renderItem={(item) => {
-              return <ListItem title={item.item.name} image={{ uri: item.item.imageURL }} />;
+              return (
+                <ListItem
+                  title={item.item.name}
+                  image={{ uri: item.item.imageURL }}
+                  setOrderItem={() => alert('De facut global store pentru item din bottom sheet')}
+                />
+              );
             }}
             showsVerticalScrollIndicator={false}
           />

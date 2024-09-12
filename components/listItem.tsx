@@ -22,14 +22,15 @@ type ListItemType = {
   category?: string;
   image?: ImageSourcePropType;
   rating?: RatingType;
+  setOrderItem?: () => void;
 };
 
 const ListItem = (props: ListItemType) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
-  const handlePress = (title: string | undefined) => {
-    // alert(`Pressed: ${title}`);
+  const handlePress = () => {
     bottomSheetRef.current?.present();
+    props.setOrderItem!();
   };
 
   const capitalise = (str: string | undefined) => {
@@ -64,7 +65,7 @@ const ListItem = (props: ListItemType) => {
           <Text numberOfLines={2} style={styles.titleText}>
             {capitalise(props.title)}
           </Text>
-          <GeneralButton OnPress={() => handlePress(props.title)} title="Order" />
+          <GeneralButton OnPress={() => handlePress()} title="Order" />
         </View>
       </View>
     </View>

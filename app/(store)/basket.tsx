@@ -1,14 +1,98 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'expo-router';
 import HeaderButton from '~/components/headerButton';
 import { Colors } from '~/assets/colors';
 import CartItem from '~/components/cartItem';
 import GeneralButton from '~/components/generalButton';
 import { ScrollView } from 'react-native-gesture-handler';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const Basket = () => {
   const router = useRouter();
+  const [emptyCart, setEmptyCart] = useState(false);
+
+  const EmptyCartView = () => {
+    return (
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          flex: 1,
+          gap: 25,
+          marginBottom: 60,
+        }}>
+        <Text style={{ fontSize: 25, color: Colors.inactiveGray, fontWeight: '300' }}>
+          Your cart is empty
+        </Text>
+        <MaterialCommunityIcons name="cart-remove" size={250} color={Colors.inactiveGray} />
+      </View>
+    );
+  };
+
+  const FullCart = () => {
+    return (
+      <>
+        <View style={styles.cartItemsContainer}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              alignItems: 'center',
+              gap: 10,
+              width: '100%',
+              padding: 7,
+            }}>
+            <CartItem />
+          </ScrollView>
+        </View>
+
+        <View style={styles.summaryContainer}>
+          <Text
+            style={{
+              fontWeight: '600',
+              fontSize: 20,
+              alignSelf: 'flex-start',
+              marginBottom: 5,
+            }}>
+            Order Summary
+          </Text>
+
+          <View style={styles.summaryDescription}>
+            <View style={styles.summaryItem}>
+              <Text style={styles.summaryItemText}>Product 1</Text>
+              <Text style={styles.summaryItemText}>20 pcs.</Text>
+            </View>
+            <View style={styles.summaryItem}>
+              <Text style={styles.summaryItemText}>Product 2</Text>
+              <Text style={styles.summaryItemText}>120 pcs.</Text>
+            </View>
+            <View style={styles.summaryItem}>
+              <Text style={styles.summaryItemText}>Product 3</Text>
+              <Text style={styles.summaryItemText}>4 pcs.</Text>
+            </View>
+            <View
+              style={{
+                height: 2,
+                width: 300,
+                backgroundColor: '#D3D3D3',
+                borderRadius: 20,
+                alignSelf: 'center',
+              }}></View>
+            <View style={styles.summaryItem}>
+              <Text style={[styles.summaryItemText, { fontWeight: 'bold' }]}>Total products</Text>
+              <Text style={[styles.summaryItemText, { fontWeight: 'bold' }]}>144 pcs.</Text>
+            </View>
+          </View>
+          <GeneralButton
+            title="Send order"
+            style={{ width: '90%', height: 40, borderRadius: 7 }}
+            textStyle={{ fontSize: 20, fontWeight: 'bold' }}
+            OnPress={() => alert('Checkout')}
+          />
+        </View>
+      </>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -22,74 +106,7 @@ const Basket = () => {
         />
         <Text style={{ fontSize: 27, fontWeight: '300' }}>Cart</Text>
       </View>
-      <View style={styles.cartItemsContainer}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            alignItems: 'center',
-            gap: 10,
-            width: '100%',
-            padding: 7,
-          }}>
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-        </ScrollView>
-      </View>
-
-      <View style={styles.summaryContainer}>
-        <Text
-          style={{
-            fontWeight: '600',
-            fontSize: 20,
-            alignSelf: 'flex-start',
-            marginBottom: 5,
-          }}>
-          Order Summary
-        </Text>
-
-        <View style={styles.summaryDescription}>
-          <View style={styles.summaryItem}>
-            <Text style={styles.summaryItemText}>Product 1</Text>
-            <Text style={styles.summaryItemText}>20 pcs.</Text>
-          </View>
-          <View style={styles.summaryItem}>
-            <Text style={styles.summaryItemText}>Product 2</Text>
-            <Text style={styles.summaryItemText}>120 pcs.</Text>
-          </View>
-          <View style={styles.summaryItem}>
-            <Text style={styles.summaryItemText}>Product 3</Text>
-            <Text style={styles.summaryItemText}>4 pcs.</Text>
-          </View>
-          <View
-            style={{
-              height: 2,
-              width: 300,
-              backgroundColor: '#D3D3D3',
-              borderRadius: 20,
-              alignSelf: 'center',
-            }}></View>
-          <View style={styles.summaryItem}>
-            <Text style={[styles.summaryItemText, { fontWeight: 'bold' }]}>Total products</Text>
-            <Text style={[styles.summaryItemText, { fontWeight: 'bold' }]}>144 pcs.</Text>
-          </View>
-        </View>
-        <GeneralButton
-          title="Send order"
-          style={{ width: '90%', height: 40, borderRadius: 7 }}
-          textStyle={{ fontSize: 20, fontWeight: 'bold' }}
-          OnPress={() => alert('Checkout')}
-        />
-      </View>
+      {emptyCart ? <EmptyCartView /> : <FullCart />}
     </View>
   );
 };
