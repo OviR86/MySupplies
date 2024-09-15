@@ -1,6 +1,6 @@
 import { StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 import React from 'react';
-import { Colors } from '~/assets/colors';
+import { Colors } from '~/assets/styles';
 import { customElevation } from '~/assets/styles';
 
 export type GeneralButtontype = {

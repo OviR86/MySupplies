@@ -1,6 +1,6 @@
 import { useRouter, Stack } from 'expo-router';
 import { View } from 'react-native';
-import { Colors } from '~/assets/colors';
+import { Colors } from '~/assets/styles';
 import HeaderButton from '~/components/headerButton';
 
 export default function Layout() {

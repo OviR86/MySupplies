@@ -20,7 +20,7 @@
     "icon": "./assets/MY.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/MySplash2.png",
+      "image": "./assets/MySplash.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },

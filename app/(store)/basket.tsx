@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import { useRouter } from 'expo-router';
 import HeaderButton from '~/components/headerButton';
-import { Colors } from '~/assets/colors';
+import { Colors } from '~/assets/styles';
 import CartItem from '~/components/cartItem';
 import GeneralButton from '~/components/generalButton';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -54,30 +54,33 @@ const Basket = () => {
               alignSelf: 'flex-start',
               marginBottom: 5,
             }}>
-            Order Summary
+            Order Summary:
           </Text>
 
           <View style={styles.summaryDescription}>
-            <View style={styles.summaryItem}>
-              <Text style={styles.summaryItemText}>Product 1</Text>
-              <Text style={styles.summaryItemText}>20 pcs.</Text>
-            </View>
-            <View style={styles.summaryItem}>
-              <Text style={styles.summaryItemText}>Product 2</Text>
-              <Text style={styles.summaryItemText}>120 pcs.</Text>
-            </View>
-            <View style={styles.summaryItem}>
-              <Text style={styles.summaryItemText}>Product 3</Text>
-              <Text style={styles.summaryItemText}>4 pcs.</Text>
-            </View>
-            <View
-              style={{
-                height: 2,
-                width: 300,
-                backgroundColor: '#D3D3D3',
-                borderRadius: 20,
-                alignSelf: 'center',
-              }}></View>
+            <ScrollView
+              style={{ minHeight: 30, maxHeight: 100 }}
+              contentContainerStyle={{ gap: 6 }}
+              showsVerticalScrollIndicator={false}>
+              <View style={styles.summaryItem}>
+                <Text style={styles.summaryItemText}>Product 1</Text>
+                <Text style={styles.summaryItemText}>20 pcs.</Text>
+              </View>
+              <View style={styles.summaryItem}>
+                <Text style={styles.summaryItemText}>Product 1</Text>
+                <Text style={styles.summaryItemText}>20 pcs.</Text>
+              </View>
+              <View style={styles.summaryItem}>
+                <Text style={styles.summaryItemText}>Product 1</Text>
+                <Text style={styles.summaryItemText}>20 pcs.</Text>
+              </View>
+              <View style={styles.summaryItem}>
+                <Text style={styles.summaryItemText}>Product 1</Text>
+                <Text style={styles.summaryItemText}>20 pcs.</Text>
+              </View>
+            </ScrollView>
+
+            <View style={styles.underline}></View>
             <View style={styles.summaryItem}>
               <Text style={[styles.summaryItemText, { fontWeight: 'bold' }]}>Total products</Text>
               <Text style={[styles.summaryItemText, { fontWeight: 'bold' }]}>144 pcs.</Text>
@@ -127,7 +130,6 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   cartItemsContainer: {
-    // backgroundColor: 'yellow',
     width: '100%',
     flex: 3.2,
     marginBottom: 10,
@@ -139,8 +141,6 @@ const styles = StyleSheet.create({
   },
   summaryContainer: {
     flex: 1.9,
-    // position: 'absolute',
-    // bottom: 20,
     alignItems: 'center',
     width: '100%',
     paddingHorizontal: 7,
@@ -163,5 +163,12 @@ const styles = StyleSheet.create({
   },
   summaryItemText: {
     fontSize: 15,
+  },
+  underline: {
+    height: 2,
+    width: 300,
+    backgroundColor: '#D3D3D3',
+    borderRadius: 20,
+    alignSelf: 'center',
   },
 });

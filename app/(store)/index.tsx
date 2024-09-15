@@ -1,19 +1,10 @@
-import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { products } from '~/assets/data'; //KEEP IT JUST IN CASE
 import ListItem from '~/components/listItem';
 import CategoryButton from '~/components/categoryButton';
-import { Colors } from '~/assets/colors';
-
+import { Colors } from '~/assets/styles';
 import PocketBase, { RecordModel } from 'pocketbase';
+import { useItemByIdStore } from '~/stores/itemByIdStore';
 
 const url = 'https://bound-lesson.pockethost.io/';
 const client = new PocketBase(url);
@@ -23,6 +14,8 @@ const Index = () => {
   const [suplyList, setSuplyList] = useState<RecordModel[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const getItemById = useItemByIdStore((state) => state.getItemById);
 
   //CATEGORY BUTTONS FUNCTIONALITY-RADIO BUTTON STYLE
   const handlecategoryPress = (category: string) => {
@@ -44,7 +37,7 @@ const Index = () => {
       const records = await client.collection('supplies').getFullList({
         sort: '-category',
       });
-      // console.log('CONSUMABILE===>', JSON.stringify(records, null, 2));
+
       setSuplyList(records);
       setLoading(false);
     } catch (error: any) {
@@ -66,7 +59,7 @@ const Index = () => {
     name: suply.name,
     supplier: suply.supplier,
     unit: suply.unit,
-    imageURL: buildImageURL(suply.image, suply.collectionId, suply.id),
+    image: buildImageURL(suply.image, suply.collectionId, suply.id),
     category: suply.category,
   }));
 
@@ -108,13 +101,15 @@ const Index = () => {
             }}
             horizontal={false}
             data={filterredProducts}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item.id}
             renderItem={(item) => {
               return (
                 <ListItem
-                  title={item.item.name}
-                  image={{ uri: item.item.imageURL }}
-                  setOrderItem={() => alert('De facut global store pentru item din bottom sheet')}
+                  name={item.item.name}
+                  image={{ uri: item.item.image }}
+                  setOrderItem={() => {
+                    getItemById(item.item.id, mappedSupplies);
+                  }}
                 />
               );
             }}

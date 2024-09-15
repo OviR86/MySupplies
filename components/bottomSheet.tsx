@@ -7,11 +7,15 @@ import {
   useBottomSheetModal,
 } from '@gorhom/bottom-sheet';
 import HeaderButton from './headerButton';
-import { Colors } from '~/assets/colors';
+import { Colors } from '~/assets/styles';
 import GeneralButton from './generalButton';
+import { useItemByIdStore } from '~/stores/itemByIdStore';
+import { capitalise, capitaliseFirst } from '~/assets/helpers';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
   const [quantity, setQuantity] = useState(0);
+  const selectedItem = useItemByIdStore((state) => state.selectedItem);
 
   const snapPoints = useMemo(() => ['80%'], []);
 
@@ -23,6 +27,7 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
   };
 
   const addToCart = () => {
+    console.log(JSON.stringify(selectedItem, null, 2), 'quantity: ', quantity.toString());
     dismiss();
     setQuantity(0);
   };
@@ -35,7 +40,6 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
   );
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
-    console.log('Plus');
   };
   const decreaseQuantity = () => {
     if (quantity <= 0) {
@@ -43,21 +47,20 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
     } else {
       setQuantity(quantity - 1);
     }
-    console.log('Minus');
   };
   return (
     <BottomSheetModal ref={ref} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
       <View style={styles.container}>
-        <Image
-          source={{ uri: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg' }}
-          style={styles.image}
-        />
+        <Image source={{ uri: selectedItem?.image }} style={styles.image} />
         <Text style={styles.nameText} numberOfLines={3}>
-          Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops
+          {capitalise(selectedItem?.name)}
         </Text>
         <View style={styles.quantitySelectorContainer}>
           <View style={{ height: 4, width: 300, backgroundColor: 'gray', borderRadius: 20 }}></View>
-          <Text style={{ fontSize: 27, fontWeight: '300', marginTop: -10 }}>Order Quantity</Text>
+          <Text style={{ fontSize: 27, fontWeight: '300', marginTop: -10 }}>
+            {capitaliseFirst(selectedItem?.unit)}{' '}
+            <FontAwesome name="times-circle" size={24} color={Colors.inactiveGray} />
+          </Text>
           <View style={styles.selectorButtonsContainer}>
             <HeaderButton
               name="minus-circle"
@@ -77,20 +80,23 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
             />
           </View>
           <View style={{ marginTop: 15, flexDirection: 'row', gap: 45, alignItems: 'center' }}>
-            <GeneralButton
-              title="Add to basket"
-              OnPress={() => addToCart()}
-              style={{ height: 35 }}
-            />
-            <GeneralButton
-              title="Cancel"
-              OnPress={() => cancelOrder()}
-              style={styles.cancelButtonStyle}
-              textStyle={{ color: 'red' }}
-            />
+            {quantity != 0 && (
+              <GeneralButton
+                title="Add to basket"
+                OnPress={() => addToCart()}
+                style={{ height: 35 }}
+              />
+            )}
           </View>
         </View>
       </View>
+      <HeaderButton
+        name="times-circle"
+        color="red"
+        onPress={() => cancelOrder()}
+        size={35}
+        style={{ position: 'absolute', right: 21 }}
+      />
     </BottomSheetModal>
   );
 });
@@ -105,8 +111,10 @@ const styles = StyleSheet.create({
   },
   image: {
     height: '50%',
-    width: '60%',
-    resizeMode: 'contain',
+    width: '90%',
+    resizeMode: 'cover',
+    borderRadius: 15,
+    overflow: 'hidden',
   },
   nameText: {
     fontSize: 20,

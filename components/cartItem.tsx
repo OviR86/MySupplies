@@ -1,8 +1,7 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
-import { Colors } from '~/assets/colors';
+import { Colors } from '~/assets/styles';
 import HeaderButton from './headerButton';
-import { customElevation } from '~/assets/styles';
 
 const CartItem = () => {
   const [quantity, setQuantity] = useState(0);

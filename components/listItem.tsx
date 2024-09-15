@@ -4,24 +4,17 @@ import { Dimensions } from 'react-native';
 import GeneralButton from './generalButton';
 import BottomSheet from './bottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { Colors } from '~/assets/colors';
 import { customElevation } from '~/assets/styles';
-
+import { capitalise } from '~/assets/helpers';
 const screenWidth = Dimensions.get('window').width;
 
-type RatingType = {
-  rate: number;
-  count: number;
-};
-
-type ListItemType = {
-  id?: number;
-  title?: string;
-  price?: number;
-  description?: string;
-  category?: string;
+export type ListItemType = {
+  id?: string;
+  name?: string;
+  supplier?: number;
+  unit?: string;
   image?: ImageSourcePropType;
-  rating?: RatingType;
+  category?: string;
   setOrderItem?: () => void;
 };
 
@@ -31,17 +24,6 @@ const ListItem = (props: ListItemType) => {
   const handlePress = () => {
     bottomSheetRef.current?.present();
     props.setOrderItem!();
-  };
-
-  const capitalise = (str: string | undefined) => {
-    if (str != undefined) {
-      return str
-        .split(' ')
-        .map((word) => {
-          return word.charAt(0).toUpperCase() + word.slice(1);
-        })
-        .join(' ');
-    } else return;
   };
 
   return (
@@ -63,7 +45,7 @@ const ListItem = (props: ListItemType) => {
             paddingVertical: 15,
           }}>
           <Text numberOfLines={2} style={styles.titleText}>
-            {capitalise(props.title)}
+            {capitalise(props.name)}
           </Text>
           <GeneralButton OnPress={() => handlePress()} title="Order" />
         </View>
