@@ -7,6 +7,8 @@ export interface Item {
   unit: string;
   image: string | undefined;
   category: string;
+  quantity?: number;
+  setOrderItem?: () => void;
 }
 
 interface ItemByIdStore {

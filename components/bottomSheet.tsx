@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
-import React, { forwardRef, useCallback, useMemo, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   BottomSheetBackdrop,
   BottomSheetBackgroundProps,
@@ -12,22 +12,11 @@ import GeneralButton from './generalButton';
 import { Item, useItemByIdStore } from '~/stores/itemByIdStore';
 import { capitalise, capitaliseFirst } from '~/assets/helpers';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { ListItemType } from './listItem';
 
 const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
-  type CartItem = {
-    id: string;
-    name: string;
-    supplier: string;
-    unit: string;
-    image: string;
-    category: string;
-    qty?: number;
-  };
-
   const [quantity, setQuantity] = useState(0);
-  const [cartItem, setCartItem] = useState<CartItem | null>(null);
-
-  console.log(JSON.stringify(cartItem, null, 2));
+  const [cartItem, setCartItem] = useState<Item | null>(null);
 
   const selectedItem = useItemByIdStore((state) => state.selectedItem);
 
@@ -40,9 +29,15 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
     setQuantity(0);
   };
 
-  // const addQuantity = (item: CartItem, quantity: number): CartItem => {
-  //   setCartItem({ ...item, quantity });
-  // };
+  const addQuantity = (item: Item | null, quantity: number) => {
+    //DE REZOLVAT TYPE PENTRY UPDATEDOBJECT
+    const upadatedObject: any = {
+      ...item,
+      quantity,
+    };
+
+    upadatedObject && setCartItem(upadatedObject);
+  };
 
   const addToCart = () => {
     console.log(JSON.stringify(selectedItem, null, 2), 'quantity: ', quantity.toString());
@@ -101,7 +96,9 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
             {quantity != 0 ? (
               <GeneralButton
                 title="Add to basket"
-                OnPress={() => addToCart}
+                OnPress={() => {
+                  addQuantity(selectedItem, quantity);
+                }}
                 style={{ height: 35, width: 150 }}
               />
             ) : (
