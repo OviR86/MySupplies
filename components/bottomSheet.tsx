@@ -9,12 +9,26 @@ import {
 import HeaderButton from './headerButton';
 import { Colors } from '~/assets/styles';
 import GeneralButton from './generalButton';
-import { useItemByIdStore } from '~/stores/itemByIdStore';
+import { Item, useItemByIdStore } from '~/stores/itemByIdStore';
 import { capitalise, capitaliseFirst } from '~/assets/helpers';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
+  type CartItem = {
+    id: string;
+    name: string;
+    supplier: string;
+    unit: string;
+    image: string;
+    category: string;
+    qty?: number;
+  };
+
   const [quantity, setQuantity] = useState(0);
+  const [cartItem, setCartItem] = useState<CartItem | null>(null);
+
+  console.log(JSON.stringify(cartItem, null, 2));
+
   const selectedItem = useItemByIdStore((state) => state.selectedItem);
 
   const snapPoints = useMemo(() => ['80%'], []);
@@ -25,6 +39,10 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
     dismiss();
     setQuantity(0);
   };
+
+  // const addQuantity = (item: CartItem, quantity: number): CartItem => {
+  //   setCartItem({ ...item, quantity });
+  // };
 
   const addToCart = () => {
     console.log(JSON.stringify(selectedItem, null, 2), 'quantity: ', quantity.toString());
@@ -80,11 +98,17 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
             />
           </View>
           <View style={{ marginTop: 15, flexDirection: 'row', gap: 45, alignItems: 'center' }}>
-            {quantity != 0 && (
+            {quantity != 0 ? (
               <GeneralButton
                 title="Add to basket"
-                OnPress={() => addToCart()}
-                style={{ height: 35 }}
+                OnPress={() => addToCart}
+                style={{ height: 35, width: 150 }}
+              />
+            ) : (
+              <GeneralButton
+                title="Close"
+                OnPress={() => cancelOrder()}
+                style={{ height: 35, backgroundColor: Colors.inactiveGray, width: 150 }}
               />
             )}
           </View>
