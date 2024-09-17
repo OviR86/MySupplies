@@ -1,4 +1,4 @@
-import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
+import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
 import React from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -21,5 +21,3 @@ const HeaderButton = ({ onPress, name, color, size, style }: Props) => {
 };
 
 export default HeaderButton;
-
-const styles = StyleSheet.create({});

@@ -9,13 +9,9 @@ import { capitalise } from '~/assets/helpers';
 const screenWidth = Dimensions.get('window').width;
 
 export type ListItemType = {
-  id?: string;
-  name?: string;
-  supplier?: number;
-  unit?: string;
-  image?: ImageSourcePropType;
-  category?: string;
-  setOrderItem?: () => void;
+  name: string;
+  image: ImageSourcePropType;
+  setOrderItem: () => void;
 };
 
 const ListItem = (props: ListItemType) => {
@@ -23,7 +19,7 @@ const ListItem = (props: ListItemType) => {
 
   const handlePress = () => {
     bottomSheetRef.current?.present();
-    props.setOrderItem!();
+    props.setOrderItem();
   };
 
   return (

@@ -12,13 +12,14 @@ import GeneralButton from './generalButton';
 import { Item, useItemByIdStore } from '~/stores/itemByIdStore';
 import { capitalise, capitaliseFirst } from '~/assets/helpers';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { ListItemType } from './listItem';
 
 const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
   const [quantity, setQuantity] = useState(0);
   const [cartItem, setCartItem] = useState<Item | null>(null);
 
-  const selectedItem = useItemByIdStore((state) => state.selectedItem);
+  console.log(JSON.stringify(cartItem, null, 2));
+
+  const selectedItem: Item | null = useItemByIdStore((state) => state.selectedItem);
 
   const snapPoints = useMemo(() => ['80%'], []);
 
@@ -29,14 +30,13 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
     setQuantity(0);
   };
 
-  const addQuantity = (item: Item | null, quantity: number) => {
+  const addQuantity = (item: Item, quantity: number) => {
     //DE REZOLVAT TYPE PENTRY UPDATEDOBJECT
-    const upadatedObject: any = {
+    const upadatedObject = {
       ...item,
       quantity,
     };
-
-    upadatedObject && setCartItem(upadatedObject);
+    if (upadatedObject != null) setCartItem(upadatedObject);
   };
 
   const addToCart = () => {
@@ -97,7 +97,7 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
               <GeneralButton
                 title="Add to basket"
                 OnPress={() => {
-                  addQuantity(selectedItem, quantity);
+                  if (selectedItem != null) addQuantity(selectedItem, quantity);
                 }}
                 style={{ height: 35, width: 150 }}
               />
