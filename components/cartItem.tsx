@@ -3,7 +3,15 @@ import React, { useState } from 'react';
 import { Colors } from '~/assets/styles';
 import HeaderButton from './headerButton';
 
-const CartItem = () => {
+type CartItemType = {
+  name: string;
+  supplier: number;
+  unit: string;
+  image: string | undefined;
+  quantity?: number;
+};
+
+const CartItem = (props: CartItemType) => {
   const [quantity, setQuantity] = useState(0);
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
@@ -22,10 +30,7 @@ const CartItem = () => {
 
   return (
     <View style={[styles.container]}>
-      <Image
-        source={{ uri: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg' }}
-        style={{ height: 70, width: 70, overflow: 'hidden' }}
-      />
+      <Image source={{ uri: props.image }} style={{ height: 70, width: 70, overflow: 'hidden' }} />
       <View
         style={{
           height: '100%',
@@ -35,9 +40,11 @@ const CartItem = () => {
           marginLeft: 15,
         }}>
         <Text style={{ fontSize: 15, fontWeight: 'bold' }} numberOfLines={2}>
-          Enjoy my NEW self-produced ELECTION Special filmed at Comedy Mothership in Austin TX!
+          {props.name}
         </Text>
-        <Text style={{ color: Colors.purpleDark, fontSize: 15, fontWeight: '500' }}>Cargus</Text>
+        <Text style={{ color: Colors.purpleDark, fontSize: 15, fontWeight: '500' }}>
+          {props.supplier}
+        </Text>
       </View>
       <View
         style={{
@@ -47,7 +54,7 @@ const CartItem = () => {
           flex: 1,
           marginRight: 5,
         }}>
-        <Text style={{ color: '#3b3b3b', fontSize: 15 }}>Sets of 10</Text>
+        <Text style={{ color: '#3b3b3b', fontSize: 15 }}>{props.unit}</Text>
         <View
           style={{
             flexDirection: 'row',
@@ -62,7 +69,7 @@ const CartItem = () => {
             size={25}
           />
           <View style={styles.quantityContainer}>
-            <Text style={styles.quantityText}>{quantity}</Text>
+            <Text style={styles.quantityText}>{props.quantity}</Text>
           </View>
 
           <HeaderButton

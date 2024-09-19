@@ -7,10 +7,12 @@ import CartItem from '~/components/cartItem';
 import GeneralButton from '~/components/generalButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import useCartStore from '~/stores/cartStore';
 
 const Basket = () => {
   const router = useRouter();
   const [emptyCart, setEmptyCart] = useState(false);
+  const { cartItems } = useCartStore();
 
   const EmptyCartView = () => {
     return (
@@ -42,7 +44,19 @@ const Basket = () => {
               width: '100%',
               padding: 7,
             }}>
-            <CartItem />
+            {cartItems.map((item, key) => {
+              if (item != null)
+                return (
+                  <CartItem
+                    key={key}
+                    image={item.image}
+                    name={item.name}
+                    unit={item.unit}
+                    quantity={item.quantity}
+                    supplier={item.supplier}
+                  />
+                );
+            })}
           </ScrollView>
         </View>
 

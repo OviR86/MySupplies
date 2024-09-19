@@ -13,12 +13,13 @@ import { Item, useItemByIdStore } from '~/stores/itemByIdStore';
 import { capitalise, capitaliseFirst } from '~/assets/helpers';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
+import useCartStore from '~/stores/cartStore';
+
 const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
   const [quantity, setQuantity] = useState(0);
   const [cartItem, setCartItem] = useState<Item | null>(null);
-
-  console.log(JSON.stringify(cartItem, null, 2));
-
+  const { addCartItem, cartItems } = useCartStore();
+  console.log('Cart items from zustand store===>', JSON.stringify(cartItems, null, 2));
   const selectedItem: Item | null = useItemByIdStore((state) => state.selectedItem);
 
   const snapPoints = useMemo(() => ['80%'], []);
@@ -37,6 +38,7 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
       quantity,
     };
     if (upadatedObject != null) setCartItem(upadatedObject);
+    if (upadatedObject != null) addCartItem(cartItem!);
   };
 
   const addToCart = () => {
