@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import HeaderButton from '~/components/headerButton';
 import { Colors } from '~/assets/styles';
@@ -8,12 +8,22 @@ import GeneralButton from '~/components/generalButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import useCartStore from '~/stores/cartStore';
+import { capitalise } from '~/assets/helpers';
 
 const Basket = () => {
+  const [totalQuantity, setTotalQuantity] = useState<number | null>(0);
   const router = useRouter();
-  const [emptyCart, setEmptyCart] = useState(false);
   const { cartItems } = useCartStore();
 
+  //ADD THE QUANTITIES FROM EVERY CART ITEM
+  useEffect(() => {
+    const mappedQuantity = cartItems.reduce((total, item) => {
+      return item && item.quantity ? total + item.quantity : total;
+    }, 0);
+    setTotalQuantity(mappedQuantity);
+  }, [cartItems]);
+
+  //DISPLAYS IF NO CART ITEMS
   const EmptyCartView = () => {
     return (
       <View
@@ -32,6 +42,7 @@ const Basket = () => {
     );
   };
 
+  //DISPLAYS IF AT LEAT ONE CART ITEM
   const FullCart = () => {
     return (
       <>
@@ -76,28 +87,23 @@ const Basket = () => {
               style={{ minHeight: 30, maxHeight: 100 }}
               contentContainerStyle={{ gap: 6 }}
               showsVerticalScrollIndicator={false}>
-              <View style={styles.summaryItem}>
-                <Text style={styles.summaryItemText}>Product 1</Text>
-                <Text style={styles.summaryItemText}>20 pcs.</Text>
-              </View>
-              <View style={styles.summaryItem}>
-                <Text style={styles.summaryItemText}>Product 1</Text>
-                <Text style={styles.summaryItemText}>20 pcs.</Text>
-              </View>
-              <View style={styles.summaryItem}>
-                <Text style={styles.summaryItemText}>Product 1</Text>
-                <Text style={styles.summaryItemText}>20 pcs.</Text>
-              </View>
-              <View style={styles.summaryItem}>
-                <Text style={styles.summaryItemText}>Product 1</Text>
-                <Text style={styles.summaryItemText}>20 pcs.</Text>
-              </View>
+              {cartItems.map((item, key) => {
+                if (item != null)
+                  return (
+                    <View style={styles.summaryItem} key={key}>
+                      <Text style={styles.summaryItemText}>{capitalise(item.name)}</Text>
+                      <Text style={styles.summaryItemText}>{item.quantity}</Text>
+                    </View>
+                  );
+              })}
             </ScrollView>
 
             <View style={styles.underline}></View>
             <View style={styles.summaryItem}>
-              <Text style={[styles.summaryItemText, { fontWeight: 'bold' }]}>Total products</Text>
-              <Text style={[styles.summaryItemText, { fontWeight: 'bold' }]}>144 pcs.</Text>
+              <Text style={[styles.summaryItemText, { fontWeight: 'bold' }]}>Total products:</Text>
+              <Text style={[styles.summaryItemText, { fontWeight: 'bold' }]}>
+                {totalQuantity} pcs.
+              </Text>
             </View>
           </View>
           <GeneralButton
@@ -123,7 +129,7 @@ const Basket = () => {
         />
         <Text style={{ fontSize: 27, fontWeight: '300' }}>Cart</Text>
       </View>
-      {emptyCart ? <EmptyCartView /> : <FullCart />}
+      {cartItems.length == 0 ? <EmptyCartView /> : <FullCart />}
     </View>
   );
 };

@@ -3,11 +3,11 @@ import { create } from 'zustand';
 export interface Item {
   id: string;
   name: string;
-  supplier: number;
+  supplier: string;
   unit: string;
   image: string | undefined;
   category: string;
-  quantity?: number;
+  quantity: number;
   setOrderItem?: () => void;
 }
 

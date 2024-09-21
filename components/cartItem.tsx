@@ -2,13 +2,14 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import { Colors } from '~/assets/styles';
 import HeaderButton from './headerButton';
+import { capitalise, capitaliseFirst } from '~/assets/helpers';
 
 type CartItemType = {
   name: string;
-  supplier: number;
+  supplier: string;
   unit: string;
   image: string | undefined;
-  quantity?: number;
+  quantity: number;
 };
 
 const CartItem = (props: CartItemType) => {
@@ -40,10 +41,10 @@ const CartItem = (props: CartItemType) => {
           marginLeft: 15,
         }}>
         <Text style={{ fontSize: 15, fontWeight: 'bold' }} numberOfLines={2}>
-          {props.name}
+          {capitalise(props.name)}
         </Text>
         <Text style={{ color: Colors.purpleDark, fontSize: 15, fontWeight: '500' }}>
-          {props.supplier}
+          {capitalise(props.supplier)}
         </Text>
       </View>
       <View
@@ -54,7 +55,7 @@ const CartItem = (props: CartItemType) => {
           flex: 1,
           marginRight: 5,
         }}>
-        <Text style={{ color: '#3b3b3b', fontSize: 15 }}>{props.unit}</Text>
+        <Text style={{ color: '#3b3b3b', fontSize: 15 }}>{capitaliseFirst(props.unit)}</Text>
         <View
           style={{
             flexDirection: 'row',
