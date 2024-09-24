@@ -49,7 +49,7 @@ const Index = () => {
   const uniqueCategories = [...new Set(suplyList.map((product) => product.category))];
 
   //CREATE IMAGE URL FOR POCKETBASE STORRED IMAGES
-  const buildImageURL = (fileName: string, collectionId: string, itemId: string) => {
+  const buildImageURL = (fileName: string, collectionId: string, itemId: string): string => {
     return `${url}api/files/${collectionId}/${itemId}/${fileName}`;
   };
 
@@ -107,9 +107,7 @@ const Index = () => {
                 <ListItem
                   name={item.item.name}
                   image={{ uri: item.item.image }}
-                  setOrderItem={() => {
-                    getItemById(item.item.id, mappedSupplies);
-                  }}
+                  setOrderItem={() => getItemById(item.item.id, mappedSupplies)}
                 />
               );
             }}

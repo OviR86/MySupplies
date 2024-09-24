@@ -19,7 +19,7 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
   const [quantity, setQuantity] = useState(0);
   const [cartItem, setCartItem] = useState<Item | null>(null);
   const { addCartItem, cartItems } = useCartStore();
-  console.log('Cart items from zustand store===>', JSON.stringify(cartItems, null, 2));
+
   const selectedItem: Item | null = useItemByIdStore((state) => state.selectedItem);
 
   const snapPoints = useMemo(() => ['80%'], []);
@@ -33,19 +33,18 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
 
   const addQuantity = (item: Item, quantity: number) => {
     //DE REZOLVAT TYPE PENTRY UPDATEDOBJECT
-    const upadatedObject = {
+    const updatedObject = {
       ...item,
       quantity,
     };
-    if (upadatedObject != null) setCartItem(upadatedObject);
-    if (upadatedObject != null) addCartItem(cartItem!);
+    setCartItem(updatedObject);
   };
 
-  const addToCart = () => {
-    console.log(JSON.stringify(selectedItem, null, 2), 'quantity: ', quantity.toString());
-    dismiss();
-    setQuantity(0);
-  };
+  useEffect(() => {
+    if (cartItem != null) {
+      addCartItem(cartItem!);
+    }
+  }, [cartItem]);
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackgroundProps) => (
