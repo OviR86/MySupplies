@@ -1,6 +1,7 @@
 import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
 import React from 'react';
 import { FontAwesome } from '@expo/vector-icons';
+import withBadge from './withBadge';
 
 type IconName = keyof typeof FontAwesome.glyphMap;
 
@@ -20,4 +21,6 @@ const HeaderButton = ({ onPress, name, color, size, style }: Props) => {
   );
 };
 
-export default HeaderButton;
+const HeaderButtonWithBadge = withBadge(HeaderButton);
+
+export { HeaderButton, HeaderButtonWithBadge };

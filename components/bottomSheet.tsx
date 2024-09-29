@@ -6,7 +6,7 @@ import {
   BottomSheetModal,
   useBottomSheetModal,
 } from '@gorhom/bottom-sheet';
-import HeaderButton from './headerButton';
+import { HeaderButton } from './headerButton';
 import { Colors } from '~/assets/styles';
 import GeneralButton from './generalButton';
 import { Item, useItemByIdStore } from '~/stores/itemByIdStore';
@@ -26,7 +26,7 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
 
   const { dismiss } = useBottomSheetModal();
 
-  const cancelOrder = () => {
+  const closeBottomSheet = () => {
     dismiss();
     setQuantity(0);
   };
@@ -64,6 +64,13 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
   };
   return (
     <BottomSheetModal ref={ref} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
+      <HeaderButton
+        name="times-circle"
+        color="red"
+        onPress={() => closeBottomSheet()}
+        size={35}
+        style={{ position: 'absolute', right: 21 }}
+      />
       <View style={styles.container}>
         <Image source={{ uri: selectedItem?.image }} style={styles.image} />
         <Text style={styles.nameText} numberOfLines={3}>
@@ -99,26 +106,20 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
                 title="Add to basket"
                 OnPress={() => {
                   if (selectedItem != null) addQuantity(selectedItem, quantity);
+                  closeBottomSheet();
                 }}
                 style={{ height: 35, width: 150 }}
               />
             ) : (
               <GeneralButton
                 title="Close"
-                OnPress={() => cancelOrder()}
+                OnPress={() => closeBottomSheet()}
                 style={{ height: 35, backgroundColor: Colors.inactiveGray, width: 150 }}
               />
             )}
           </View>
         </View>
       </View>
-      <HeaderButton
-        name="times-circle"
-        color="red"
-        onPress={() => cancelOrder()}
-        size={35}
-        style={{ position: 'absolute', right: 21 }}
-      />
     </BottomSheetModal>
   );
 });

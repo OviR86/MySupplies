@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
-import HeaderButton from '~/components/headerButton';
+import { HeaderButton } from '~/components/headerButton';
 import { Colors } from '~/assets/styles';
 import CartItem from '~/components/cartItem';
 import GeneralButton from '~/components/generalButton';
@@ -11,17 +11,8 @@ import useCartStore from '~/stores/cartStore';
 import { capitalise } from '~/assets/helpers';
 
 const Basket = () => {
-  const [totalQuantity, setTotalQuantity] = useState<number | null>(0);
   const router = useRouter();
-  const { cartItems } = useCartStore();
-
-  //ADD THE QUANTITIES FROM EVERY CART ITEM
-  useEffect(() => {
-    const mappedQuantity = cartItems.reduce((total, item) => {
-      return item && item.quantity ? total + item.quantity : total;
-    }, 0);
-    setTotalQuantity(mappedQuantity);
-  }, [cartItems]);
+  const { cartItems, totalQuantity } = useCartStore();
 
   //DISPLAYS IF NO CART ITEMS
   const EmptyCartView = () => {
@@ -59,12 +50,13 @@ const Basket = () => {
               if (item != null)
                 return (
                   <CartItem
-                    key={key}
+                    key={item.id}
                     image={item.image}
                     name={item.name}
                     unit={item.unit}
                     quantity={item.quantity}
                     supplier={item.supplier}
+                    id={item.id}
                   />
                 );
             })}

@@ -77,7 +77,7 @@ const Index = () => {
           <Text style={styles.title}>Select supply category</Text>
           <ScrollView
             horizontal
-            style={{ height: 60, marginBottom: 10 }}
+            style={{ height: 60, marginBottom: 5 }}
             showsHorizontalScrollIndicator={false}>
             {uniqueCategories.map((category, index) => {
               return (
@@ -129,9 +129,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   title: {
-    fontSize: 30,
-    fontWeight: '300',
-    marginVertical: 15,
+    fontSize: 20,
+    fontWeight: '400',
+    marginVertical: 5,
     color: Colors.purpleDark,
   },
 });

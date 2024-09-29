@@ -1,10 +1,12 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import { Alert, Image, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
 import { Colors } from '~/assets/styles';
-import HeaderButton from './headerButton';
+import { HeaderButton } from './headerButton';
 import { capitalise, capitaliseFirst } from '~/assets/helpers';
+import useCartStore from '~/stores/cartStore';
 
 type CartItemType = {
+  id: string;
   name: string;
   supplier: string;
   unit: string;
@@ -13,20 +15,28 @@ type CartItemType = {
 };
 
 const CartItem = (props: CartItemType) => {
-  const [quantity, setQuantity] = useState(0);
+  const { updateItemQuantity, removeItem } = useCartStore();
+
   const increaseQuantity = () => {
-    setQuantity(quantity + 1);
+    updateItemQuantity(props.id, props.quantity + 1);
   };
   const decreaseQuantity = () => {
-    if (quantity <= 0) {
-      setQuantity(0);
-    } else {
-      setQuantity(quantity - 1);
+    if (props.quantity > 0) {
+      updateItemQuantity(props.id, props.quantity - 1);
     }
   };
 
   const deleteItem = () => {
-    alert('deleted');
+    Alert.alert('Delete item', `Are you sure you want to detele ${props.name}?`, [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Ok',
+        style: 'default',
+        onPress: () => {
+          removeItem(props.id);
+        },
+      },
+    ]);
   };
 
   return (
@@ -64,9 +74,9 @@ const CartItem = (props: CartItemType) => {
             gap: 10,
           }}>
           <HeaderButton
-            name={quantity == 0 ? 'trash-o' : 'minus-circle'}
-            color={quantity == 0 ? 'red' : Colors.purpleMid}
-            onPress={quantity == 0 ? deleteItem : decreaseQuantity}
+            name={props.quantity == 1 ? 'trash-o' : 'minus-circle'}
+            color={props.quantity == 1 ? 'red' : Colors.purpleMid}
+            onPress={props.quantity == 1 ? deleteItem : decreaseQuantity}
             size={25}
           />
           <View style={styles.quantityContainer}>
