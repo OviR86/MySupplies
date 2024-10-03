@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { HeaderButton } from '~/components/headerButton';
@@ -9,10 +9,37 @@ import { ScrollView } from 'react-native-gesture-handler';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import useCartStore from '~/stores/cartStore';
 import { capitalise } from '~/assets/helpers';
+import PocketBase from 'pocketbase';
+const url = 'https://bound-lesson.pockethost.io/';
+const client = new PocketBase(url);
 
 const Basket = () => {
   const router = useRouter();
-  const { cartItems, totalQuantity } = useCartStore();
+  const { cartItems, totalQuantity, clearCart } = useCartStore();
+
+  const sendOrder = async () => {
+    const data = {
+      user: 'Ovidiu-placeholder',
+      items: cartItems,
+      status: 'new',
+    };
+    try {
+      const record = await client.collection('orders').create(data);
+      if (record != null) {
+        clearCart(),
+          Alert.alert('Order sent', 'Thank you', [
+            {
+              text: 'OK',
+              onPress: () => {
+                router.replace('/(store)');
+              },
+            },
+          ]);
+      }
+    } catch (e: any) {
+      Alert.alert(`Order send error:, ${e}`);
+    }
+  };
 
   //DISPLAYS IF NO CART ITEMS
   const EmptyCartView = () => {
@@ -102,7 +129,7 @@ const Basket = () => {
             title="Send order"
             style={{ width: '90%', height: 40, borderRadius: 7 }}
             textStyle={{ fontSize: 20, fontWeight: 'bold' }}
-            OnPress={() => alert('Checkout')}
+            OnPress={() => sendOrder()}
           />
         </View>
       </>

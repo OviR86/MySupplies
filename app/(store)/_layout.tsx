@@ -40,15 +40,18 @@ export default function Layout() {
         options={{
           headerShown: false,
           title: 'Checkout',
-          presentation: 'modal',
         }}
       />
       <Stack.Screen
         name="user"
         options={{
-          headerShown: false,
           title: 'User',
-          presentation: 'modal',
+        }}
+      />
+      <Stack.Screen
+        name="orders"
+        options={{
+          title: 'Orders',
         }}
       />
     </Stack>
