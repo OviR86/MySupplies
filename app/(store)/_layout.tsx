@@ -9,6 +9,7 @@ export default function Layout() {
   const { cartItems, totalQuantity } = useCartStore();
 
   const router = useRouter();
+
   return (
     <Stack>
       <Stack.Screen

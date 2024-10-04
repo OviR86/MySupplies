@@ -8,8 +8,11 @@ const User = () => {
   const router = useRouter();
   return (
     <View style={styles.container}>
-      <Text>User</Text>
-      <GeneralButton OnPress={() => router.push('/orders')} title="Orders" />
+      <GeneralButton
+        OnPress={() => router.replace('/orders')}
+        title="Orders"
+        style={{ width: '60%' }}
+      />
     </View>
   );
 };
