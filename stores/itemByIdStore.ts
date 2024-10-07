@@ -7,7 +7,7 @@ export interface Item {
   unit: string;
   image: string | undefined;
   category: string;
-  quantity: number;
+  quantity?: number;
   setOrderItem?: () => void;
 }
 

@@ -48,22 +48,22 @@ const orders = () => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.listContainer}
             data={orders}
-            renderItem={(item) => {
+            renderItem={({ item }) => {
               return (
                 <View style={[styles.itemContainer, customElevation]}>
                   <View style={{ height: '100%', justifyContent: 'space-evenly' }}>
                     <Text style={{ fontWeight: 'bold' }}>
-                      Order ID: {item.item.id.slice(0, 8).toUpperCase()}
+                      Order ID: {item.id.slice(0, 8).toUpperCase()}
                     </Text>
-                    <Text style={{ marginTop: -16 }}>{formatDate(item.item.created)}</Text>
+                    <Text style={{ marginTop: -16 }}>{formatDate(item.created)}</Text>
                     <Text>
                       Status:{' '}
                       <Text
                         style={{
-                          color: statusColors[item.item.status],
+                          color: statusColors[item.status],
                           fontWeight: 'bold',
                         }}>
-                        {capitalise(item.item.status)}
+                        {capitalise(item.status)}
                       </Text>
                     </Text>
                   </View>
@@ -72,7 +72,7 @@ const orders = () => {
                       alignItems: 'flex-end',
                       justifyContent: 'space-between',
                     }}>
-                    {item.item.items.map((item: any, index: any) => {
+                    {item.items.map((item: any, index: any) => {
                       return (
                         <Text key={index} numberOfLines={1} style={{ alignSelf: 'center' }}>
                           {capitalise(item.name)}

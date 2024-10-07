@@ -81,7 +81,7 @@ const Basket = () => {
                     image={item.image}
                     name={item.name}
                     unit={item.unit}
-                    quantity={item.quantity}
+                    quantity={item.quantity ?? 1}
                     supplier={item.supplier}
                     id={item.id}
                   />

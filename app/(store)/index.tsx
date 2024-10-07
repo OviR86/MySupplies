@@ -110,12 +110,12 @@ const Index = () => {
             horizontal={false}
             data={filterredProducts}
             keyExtractor={(item) => item.id}
-            renderItem={(item) => {
+            renderItem={({ item }) => {
               return (
                 <ListItem
-                  name={item.item.name}
-                  image={{ uri: item.item.image }}
-                  setOrderItem={() => getItemById(item.item.id, mappedSupplies)}
+                  name={item.name}
+                  image={{ uri: item.image }}
+                  setOrderItem={() => getItemById(item.id, mappedSupplies)}
                 />
               );
             }}

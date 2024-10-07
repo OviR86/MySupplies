@@ -6,12 +6,11 @@ import { SafeAreaView } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function Layout() {
-  const [initialRoute, setInitialRoute] = useState<Href<string | object>>('/(store)');
   const router = useRouter();
 
   useEffect(() => {
-    return router.replace(initialRoute);
-  }, [initialRoute]);
+    return router.replace('/(auth)/signup');
+  }, []);
 
   return (
     <GestureHandlerRootView>
@@ -21,6 +20,7 @@ export default function Layout() {
             screenOptions={{
               headerShown: false,
             }}>
+            <Stack.Screen name="(auth)" />
             <Stack.Screen name="(supplier)" />
             <Stack.Screen name="(store)" />
           </Stack>
