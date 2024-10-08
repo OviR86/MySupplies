@@ -1,21 +1,30 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
 import { Colors, customElevation } from '~/assets/styles';
 import CustomTextInput from '~/components/customTextInput';
 import GeneralButton from '~/components/generalButton';
 import DropDownMenu from '~/components/dropDownMenu';
+import PocketBase from 'pocketbase';
+import { useRouter } from 'expo-router';
+import useAuthStore from '~/stores/authenticationStore';
+const url = 'https://bound-lesson.pockethost.io/';
+const client = new PocketBase(url);
 
 const Signup = () => {
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [recoverPassword, setRecoverPassword] = useState(false);
+  const router = useRouter();
+
+  const { createUser, setUserName, setEmail, setPassword, setRole, role } = useAuthStore();
+
+  const handleCreateUser = async () => {
+    createUser();
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.welcome}>Welcome to MySupplies</Text>
-      <Text style={styles.callToAction}>Thos is where you create a new user account.</Text>
+      <Text style={styles.callToAction}>This is where you create a new user account.</Text>
 
-      <DropDownMenu />
+      <DropDownMenu role={role} setRole={setRole} />
 
       <CustomTextInput
         textStyle={[styles.textInput, customElevation]}
@@ -38,7 +47,7 @@ const Signup = () => {
 
       <GeneralButton
         title="Create user"
-        OnPress={() => {}}
+        OnPress={() => handleCreateUser()}
         style={{ width: '80%', marginVertical: 10 }}
       />
     </View>

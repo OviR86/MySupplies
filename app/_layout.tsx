@@ -4,12 +4,17 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import PocketBase from 'pocketbase';
+const url = 'https://bound-lesson.pockethost.io/';
+const client = new PocketBase(url);
 
 export default function Layout() {
   const router = useRouter();
 
   useEffect(() => {
-    return router.replace('/(auth)/signup');
+    if (!client.authStore.token) {
+      router.replace('/(auth)/signup');
+    }
   }, []);
 
   return (

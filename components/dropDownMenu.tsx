@@ -1,23 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Colors, customElevation } from '~/assets/styles';
 
 const data = [
-  { label: 'Admin', value: '1' },
-  { label: 'Supplier', value: '2' },
-  { label: 'Store', value: '3' },
+  { label: 'Admin', value: 'admin' },
+  { label: 'Supplier', value: 'supplier' },
+  { label: 'Store', value: 'store' },
 ];
 
-const DropdownComponent = () => {
-  const [value, setValue] = useState('');
+type DropDownMenuType = {
+  role: string;
+  setRole: (text: string) => void;
+};
 
+const DropdownComponent = (props: DropDownMenuType) => {
   const renderItem = (item: any) => {
     return (
       <View style={styles.item}>
         <Text style={styles.textItem}>{item.label}</Text>
-        {item.value === value && (
+        {item.value === props.role && (
           <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
         )}
       </View>
@@ -36,10 +39,8 @@ const DropdownComponent = () => {
       labelField="label"
       valueField="value"
       placeholder="Select user role..."
-      value={value}
-      onChange={(item) => {
-        setValue(item.value);
-      }}
+      value={props.role}
+      onChange={(item) => props.setRole(item.value)}
       renderLeftIcon={() => (
         <AntDesign style={styles.icon} color={Colors.inactiveGray} name="Safety" size={16} />
       )}

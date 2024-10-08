@@ -3,18 +3,40 @@ import React, { useState } from 'react';
 import CustomTextInput from '~/components/customTextInput';
 import GeneralButton from '~/components/generalButton';
 import { Colors, customElevation } from '~/assets/styles';
+import PocketBase from 'pocketbase';
+import { useRouter } from 'expo-router';
+const url = 'https://bound-lesson.pockethost.io/';
+const client = new PocketBase(url);
+client.autoCancellation(false);
 
 const Login = () => {
+  const router = useRouter();
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [recoverPassword, setRecoverPassword] = useState(false);
+  console.log('userName, password', userName, password);
 
   const recover = () => {
     setRecoverPassword(!recoverPassword);
     setEmail('');
     setPassword('');
     setUserName('');
+  };
+
+  const handleLogin = async () => {
+    try {
+      const authData = await client.collection('users').authWithPassword(userName, password);
+      if (client.authStore.model!.role == 'admin') {
+        router.replace('/(supplier)');
+      }
+    } catch (error: any) {
+      alert(` Login error: ${error}`);
+      console.log(error.data);
+    } finally {
+      setPassword('');
+      setUserName('');
+    }
   };
 
   return (
@@ -61,7 +83,7 @@ const Login = () => {
           />
           <GeneralButton
             title="Login"
-            OnPress={() => {}}
+            OnPress={() => handleLogin()}
             style={{ width: '80%', marginVertical: 10 }}
           />
           <Text>
