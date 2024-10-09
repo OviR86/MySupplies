@@ -28,8 +28,16 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const authData = await client.collection('users').authWithPassword(userName, password);
-      if (client.authStore.model!.role == 'admin') {
-        router.replace('/(supplier)');
+      if (authData) {
+        const userRole = client.authStore.model?.role;
+        if (userRole == 'supplier') {
+          router.replace('/(supplier)');
+        }
+        if (userRole == 'store') {
+          router.replace('/(store)');
+        } else if (userRole === 'admin') {
+          router.replace('/(admin)');
+        }
       }
     } catch (error: any) {
       alert(` Login error: ${error}`);

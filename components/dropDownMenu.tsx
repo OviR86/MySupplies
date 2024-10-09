@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Colors, customElevation } from '~/assets/styles';
+import useAuthStore from '~/stores/authenticationStore';
 
 const data = [
   { label: 'Admin', value: 'admin' },
@@ -10,17 +11,13 @@ const data = [
   { label: 'Store', value: 'store' },
 ];
 
-type DropDownMenuType = {
-  role: string;
-  setRole: (text: string) => void;
-};
-
-const DropdownComponent = (props: DropDownMenuType) => {
+const DropdownComponent = () => {
+  const { setRole, role } = useAuthStore();
   const renderItem = (item: any) => {
     return (
       <View style={styles.item}>
         <Text style={styles.textItem}>{item.label}</Text>
-        {item.value === props.role && (
+        {item.value === role && (
           <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
         )}
       </View>
@@ -39,8 +36,8 @@ const DropdownComponent = (props: DropDownMenuType) => {
       labelField="label"
       valueField="value"
       placeholder="Select user role..."
-      value={props.role}
-      onChange={(item) => props.setRole(item.value)}
+      value={role}
+      onChange={(item) => setRole(item.value)}
       renderLeftIcon={() => (
         <AntDesign style={styles.icon} color={Colors.inactiveGray} name="Safety" size={16} />
       )}

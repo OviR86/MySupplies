@@ -9,16 +9,14 @@ import { useRouter } from 'expo-router';
 import useAuthStore from '~/stores/authenticationStore';
 const url = 'https://bound-lesson.pockethost.io/';
 const client = new PocketBase(url);
+client.autoCancellation(false);
 
 const Signup = () => {
   const router = useRouter();
-
   const { setUserName, setEmail, setPassword, setRole, role, userName, email, password } =
     useAuthStore();
+  console.log('role-->', role);
 
-  const handleCreateUser = async () => {
-    createUser();
-  };
   const createUser = async () => {
     const data = {
       username: userName,
@@ -28,10 +26,24 @@ const Signup = () => {
       passwordConfirm: password,
       role: role,
     };
+    console.log('Create user data--->', data);
+
     try {
       const record = await client.collection('users').create(data);
-    } catch (error) {
-      console.error('Error creating user:', error);
+
+      const authData = await client.collection('users').authWithPassword(email, password);
+      if (authData) {
+        const userRole = client.authStore.model?.role;
+        if (userRole === 'supplier') {
+          router.replace('/(supplier)');
+        } else if (userRole === 'store') {
+          router.replace('/(store)');
+        } else if (userRole === 'admin') {
+          router.replace('/(admin)');
+        }
+      }
+    } catch (error: any) {
+      console.error('Error creating user:', error.message);
     }
   };
   return (
@@ -39,7 +51,7 @@ const Signup = () => {
       <Text style={styles.welcome}>Welcome to MySupplies</Text>
       <Text style={styles.callToAction}>This is where you create a new user account.</Text>
 
-      <DropDownMenu role={role} setRole={setRole} />
+      <DropDownMenu />
 
       <CustomTextInput
         textStyle={[styles.textInput, customElevation]}
@@ -62,7 +74,7 @@ const Signup = () => {
 
       <GeneralButton
         title="Create user"
-        OnPress={() => handleCreateUser()}
+        OnPress={() => createUser()}
         style={{ width: '80%', marginVertical: 10 }}
       />
     </View>
@@ -82,7 +94,6 @@ const styles = StyleSheet.create({
     color: 'black',
     width: '80%',
     padding: 10,
-
     borderColor: Colors.purpleMid,
     backgroundColor: 'white',
     borderWidth: 1,

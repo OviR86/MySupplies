@@ -1,26 +1,17 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
 import GeneralButton from '~/components/generalButton';
-import PocketBase from 'pocketbase';
 import { useRouter } from 'expo-router';
-
 import useAuthStore from '~/stores/authenticationStore';
-const url = 'https://bound-lesson.pockethost.io/';
-const client = new PocketBase(url);
-const User = () => {
-  useEffect(() => {
-    if (client.authStore.token === null) {
-      router.replace('/(auth)/signup');
-    }
-    console.log(client.authStore.token);
-  }, []);
+
+const AdminPannel = () => {
   const { signOut } = useAuthStore();
   const router = useRouter();
   return (
     <View style={styles.container}>
       <GeneralButton
-        OnPress={() => router.replace('/orders')}
-        title="Orders"
+        OnPress={() => router.push('/(auth)/signup')}
+        title="Create user"
         style={{ width: '60%' }}
       />
       <GeneralButton OnPress={() => signOut(router)} title="Logout" style={{ width: '60%' }} />
@@ -28,7 +19,7 @@ const User = () => {
   );
 };
 
-export default User;
+export default AdminPannel;
 
 const styles = StyleSheet.create({
   container: {
