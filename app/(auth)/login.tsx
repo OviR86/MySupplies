@@ -1,19 +1,20 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import CustomTextInput from '~/components/customTextInput';
 import GeneralButton from '~/components/generalButton';
 import { Colors, customElevation } from '~/assets/styles';
 import PocketBase from 'pocketbase';
 import { useRouter } from 'expo-router';
+import useAuthStore from '~/stores/authenticationStore';
 const url = 'https://bound-lesson.pockethost.io/';
 const client = new PocketBase(url);
 client.autoCancellation(false);
 
 const Login = () => {
+  const { setUserName, setEmail, setPassword, setRole, role, userName, email, password } =
+    useAuthStore();
   const router = useRouter();
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+
   const [recoverPassword, setRecoverPassword] = useState(false);
   console.log('userName, password', userName, password);
 

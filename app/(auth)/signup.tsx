@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Colors, customElevation } from '~/assets/styles';
 import CustomTextInput from '~/components/customTextInput';
 import GeneralButton from '~/components/generalButton';
@@ -13,12 +13,27 @@ const client = new PocketBase(url);
 const Signup = () => {
   const router = useRouter();
 
-  const { createUser, setUserName, setEmail, setPassword, setRole, role } = useAuthStore();
+  const { setUserName, setEmail, setPassword, setRole, role, userName, email, password } =
+    useAuthStore();
 
   const handleCreateUser = async () => {
     createUser();
   };
-
+  const createUser = async () => {
+    const data = {
+      username: userName,
+      email: email,
+      emailVisibility: true,
+      password: password,
+      passwordConfirm: password,
+      role: role,
+    };
+    try {
+      const record = await client.collection('users').create(data);
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.welcome}>Welcome to MySupplies</Text>
@@ -57,8 +72,12 @@ const Signup = () => {
 export default Signup;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 25 },
-
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 25,
+  },
   textInput: {
     color: 'black',
     width: '80%',

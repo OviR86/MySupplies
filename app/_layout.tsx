@@ -13,7 +13,7 @@ export default function Layout() {
 
   useEffect(() => {
     if (!client.authStore.token) {
-      router.replace('/(auth)/signup');
+      router.replace('/(auth)/login');
     }
   }, []);
 
