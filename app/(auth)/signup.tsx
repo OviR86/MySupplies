@@ -7,14 +7,14 @@ import DropDownMenu from '~/components/dropDownMenu';
 import PocketBase from 'pocketbase';
 import { useRouter } from 'expo-router';
 import useAuthStore from '~/stores/authenticationStore';
+import WithSecureTextToggle from '~/components/withSecureTextToggle';
 const url = 'https://bound-lesson.pockethost.io/';
 const client = new PocketBase(url);
 client.autoCancellation(false);
 
 const Signup = () => {
   const router = useRouter();
-  const { setUserName, setEmail, setPassword, setRole, role, userName, email, password } =
-    useAuthStore();
+  const { setUserName, setEmail, setPassword, role, userName, email, password } = useAuthStore();
   console.log('role-->', role);
 
   const createUser = async () => {
@@ -44,6 +44,9 @@ const Signup = () => {
       }
     } catch (error: any) {
       console.error('Error creating user:', error.message);
+    } finally {
+      setPassword('');
+      setUserName('');
     }
   };
   return (
@@ -58,18 +61,24 @@ const Signup = () => {
         placeholder="Username..."
         placeholderTextColor={Colors.inactiveGray}
         onChangeText={(text) => setUserName(text)}
+        value={userName}
       />
       <CustomTextInput
         textStyle={[styles.textInput, customElevation]}
         placeholder="Email..."
         placeholderTextColor={Colors.inactiveGray}
         onChangeText={(text) => setEmail(text)}
+        value={email}
+        inputMode="email"
       />
-      <CustomTextInput
+
+      <WithSecureTextToggle
         textStyle={[styles.textInput, customElevation]}
         placeholder="Password..."
         placeholderTextColor={Colors.inactiveGray}
         onChangeText={(text) => setPassword(text)}
+        value={password}
+        secureTextEntry={true}
       />
 
       <GeneralButton

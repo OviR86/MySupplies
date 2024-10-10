@@ -1,13 +1,14 @@
-import { StyleProp, StyleSheet, Text, TextInput, TextStyle, View, ViewStyle } from 'react-native';
+import { InputModeOptions, StyleProp, TextInput, TextStyle } from 'react-native';
 import React from 'react';
 
 type TextInputType = {
   placeholder: string;
-  //   contaierStyle: StyleProp<ViewStyle>;
   textStyle: StyleProp<TextStyle>;
   placeholderTextColor?: string;
   onChangeText: (text: string) => void;
   value?: string;
+  secureTextEntry?: boolean;
+  inputMode?: InputModeOptions | undefined;
 };
 
 const CustomTextInput = (props: TextInputType) => {
@@ -19,11 +20,11 @@ const CustomTextInput = (props: TextInputType) => {
         placeholderTextColor={props.placeholderTextColor}
         onChangeText={props.onChangeText}
         value={props.value}
+        secureTextEntry={props.secureTextEntry}
+        inputMode={props.inputMode}
       />
     </>
   );
 };
 
 export default CustomTextInput;
-
-const styles = StyleSheet.create({});

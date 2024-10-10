@@ -8,12 +8,6 @@ import useAuthStore from '~/stores/authenticationStore';
 const url = 'https://bound-lesson.pockethost.io/';
 const client = new PocketBase(url);
 const User = () => {
-  useEffect(() => {
-    if (client.authStore.token === null) {
-      router.replace('/(auth)/signup');
-    }
-    console.log(client.authStore.token);
-  }, []);
   const { signOut } = useAuthStore();
   const router = useRouter();
   return (

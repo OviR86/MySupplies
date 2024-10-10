@@ -1,7 +1,7 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Href, Stack, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { SafeAreaView } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import PocketBase from 'pocketbase';
@@ -12,9 +12,28 @@ export default function Layout() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!client.authStore.token) {
-      router.replace('/(auth)/login');
-    }
+    const checkAuth = async () => {
+      console.log('checkAuth-client.authStore.isValid-->', client.authStore.isValid);
+
+      const isValidAuth = client.authStore.isValid;
+      const userRole = client.authStore.model?.role;
+
+      if (isValidAuth && userRole) {
+        // User is authenticated, route based on their role
+        if (userRole === 'supplier') {
+          router.replace('/(supplier)');
+        } else if (userRole === 'store') {
+          router.replace('/(store)');
+        } else if (userRole === 'admin') {
+          router.replace('/(admin)');
+        }
+      } else {
+        // No valid authentication, send to login
+        router.replace('/login');
+      }
+    };
+
+    checkAuth();
   }, []);
 
   return (

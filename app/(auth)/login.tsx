@@ -1,13 +1,21 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomTextInput from '~/components/customTextInput';
 import GeneralButton from '~/components/generalButton';
 import { Colors, customElevation } from '~/assets/styles';
-import PocketBase from 'pocketbase';
+import PocketBase, { AsyncAuthStore } from 'pocketbase';
 import { useRouter } from 'expo-router';
 import useAuthStore from '~/stores/authenticationStore';
 const url = 'https://bound-lesson.pockethost.io/';
-const client = new PocketBase(url);
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import WithSecureTextToggle from '~/components/withSecureTextToggle';
+
+const store = new AsyncAuthStore({
+  save: async (serialized) => AsyncStorage.setItem('pb_auth', serialized),
+  initial: AsyncStorage.getItem('pb_auth'),
+});
+
+const client = new PocketBase(url, store);
 client.autoCancellation(false);
 
 const Login = () => {
@@ -83,12 +91,16 @@ const Login = () => {
             placeholder="Username..."
             placeholderTextColor={Colors.inactiveGray}
             onChangeText={(text) => setUserName(text)}
+            value={userName}
           />
-          <CustomTextInput
+
+          <WithSecureTextToggle
             textStyle={[styles.textInput, customElevation]}
             placeholder="Password..."
             placeholderTextColor={Colors.inactiveGray}
             onChangeText={(text) => setPassword(text)}
+            value={password}
+            secureTextEntry={true}
           />
           <GeneralButton
             title="Login"

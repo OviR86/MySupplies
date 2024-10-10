@@ -37,7 +37,7 @@ const useAuthStore = create<AuthState>((set) => ({
     }
 
     // Redirect to the login screen regardless of whether the token exists
-    router.replace('/login');
+    router.replace('/(auth)/login');
   },
 }));
 

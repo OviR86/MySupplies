@@ -13,10 +13,10 @@ type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
-const HeaderButton = ({ onPress, name, color, size, style }: Props) => {
+const HeaderButton = (props: Props) => {
   return (
-    <TouchableOpacity onPress={onPress} style={style}>
-      <FontAwesome name={name} size={size} color={color} />
+    <TouchableOpacity onPress={props.onPress} style={props.style}>
+      <FontAwesome name={props.name} size={props.size} color={props.color} />
     </TouchableOpacity>
   );
 };
