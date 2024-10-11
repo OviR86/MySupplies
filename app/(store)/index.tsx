@@ -1,4 +1,12 @@
-import { ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Button,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import ListItem from '~/components/listItem';
 import CategoryButton from '~/components/categoryButton';
@@ -6,22 +14,17 @@ import { Colors } from '~/assets/styles';
 import PocketBase, { RecordModel } from 'pocketbase';
 import { useItemByIdStore } from '~/stores/itemByIdStore';
 import { useRouter } from 'expo-router';
+import useAuthStore from '~/stores/authenticationStore';
 
 const url = 'https://bound-lesson.pockethost.io/';
 const client = new PocketBase(url);
 client.autoCancellation(false);
 
 const Index = () => {
-  const router = useRouter();
+  const { userName, id } = useAuthStore();
   const [suplyList, setSuplyList] = useState<RecordModel[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
-  //TEMP REPLACE FUNCTION TO WORK ON ORDERS SCREEN
-  const [replace, setReplace] = useState(false);
-  useEffect(() => {
-    replace && router.replace('/(store)/orders');
-  }, [replace]);
 
   const getItemById = useItemByIdStore((state) => state.getItemById);
 

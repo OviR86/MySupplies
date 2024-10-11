@@ -21,10 +21,10 @@ const Basket = () => {
 
   const sendOrder = async () => {
     const data = {
-      userId: id,
       user: userName,
       items: cartItems,
       status: 'new',
+      userId: id,
     };
     try {
       const record = await client.collection('orders').create(data);
@@ -34,14 +34,14 @@ const Basket = () => {
             {
               text: 'OK',
               onPress: () => {
-                router.replace('/(store)');
+                router.back();
               },
             },
           ]);
       }
     } catch (e: any) {
       Alert.alert(`Order send error:, ${e}`);
-      console.log(`Order send error:, ${e.data}`);
+      console.log(`Order send error:, ${e.originalError}`);
     }
   };
 

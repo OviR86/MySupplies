@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import CustomTextInput from '~/components/customTextInput';
-import GeneralButton from '~/components/generalButton';
 import { Colors, customElevation } from '~/assets/styles';
 import PocketBase, { AsyncAuthStore, RecordAuthResponse } from 'pocketbase';
 import { useRouter } from 'expo-router';
@@ -9,6 +8,7 @@ import useAuthStore from '~/stores/authenticationStore';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WithSecureTextToggle from '~/components/withSecureTextToggle';
+import GeneralButton from '~/components/generalButton';
 
 // const store = new AsyncAuthStore({
 //   save: async (serialized) => AsyncStorage.setItem('pb_auth', serialized),
@@ -20,18 +20,8 @@ client.autoCancellation(false);
 
 const Login = () => {
   const [recoverPassword, setRecoverPassword] = useState(false);
-  const {
-    setUserName,
-    setEmail,
-    setPassword,
-    setRole,
-    role,
-    userName,
-    email,
-    password,
-    id,
-    setId,
-  } = useAuthStore();
+  const { setUserName, setEmail, setPassword, setRole, role, userName, email, password, setId } =
+    useAuthStore();
   const router = useRouter();
 
   const recover = () => {

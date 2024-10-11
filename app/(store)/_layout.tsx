@@ -19,14 +19,14 @@ export default function Layout() {
         options={{
           title: 'Produse',
           headerRight: () => (
-            <View style={{ flexDirection: 'row', gap: 30 }}>
+            <View style={{ flexDirection: 'row', gap: 30, alignItems: 'center' }}>
+              <Text style={{ fontSize: 11, color: Colors.inactiveGray }}>Welcome, {userName}</Text>
               <HeaderButton
                 onPress={() => router.push('/user')}
                 name="user-circle"
                 color={Colors.inactiveGray}
                 size={24}
               />
-              <Text>{id}</Text>
               <HeaderButtonWithBadge
                 onPress={() => router.push('/basket')}
                 name="shopping-basket"

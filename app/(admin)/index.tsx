@@ -1,10 +1,10 @@
 import { StyleSheet, View, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import GeneralButton from '~/components/generalButton';
 import { useRouter } from 'expo-router';
 import useAuthStore from '~/stores/authenticationStore';
 import { Colors } from '~/assets/styles';
 import PocketBase from 'pocketbase';
+import GeneralButton from '~/components/generalButton';
 const url = 'https://bound-lesson.pockethost.io/';
 const client = new PocketBase(url);
 

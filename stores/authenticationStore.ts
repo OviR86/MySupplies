@@ -29,11 +29,12 @@ const useAuthStore = create<AuthState>((set) => ({
   setEmail: (email) => set({ email }),
   setPassword: (password) => set({ password }),
   setRole: (role) => set({ role }),
-  setId: (id) => ({ id }),
-  signOut: (router: Router) => {
+  setId: (id) => set({ id }),
+
+  signOut: async (router: Router) => {
     if (client.authStore.token) {
       // Clear the auth store to log out the user if the token exists
-      client.authStore.clear();
+      await client.authStore.clear();
       console.log('User signed out successfully.');
     } else {
       console.log('No active session found.');
