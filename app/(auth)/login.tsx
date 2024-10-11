@@ -3,28 +3,36 @@ import React, { useEffect, useState } from 'react';
 import CustomTextInput from '~/components/customTextInput';
 import GeneralButton from '~/components/generalButton';
 import { Colors, customElevation } from '~/assets/styles';
-import PocketBase, { AsyncAuthStore } from 'pocketbase';
+import PocketBase, { AsyncAuthStore, RecordAuthResponse } from 'pocketbase';
 import { useRouter } from 'expo-router';
 import useAuthStore from '~/stores/authenticationStore';
-const url = 'https://bound-lesson.pockethost.io/';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WithSecureTextToggle from '~/components/withSecureTextToggle';
 
-const store = new AsyncAuthStore({
-  save: async (serialized) => AsyncStorage.setItem('pb_auth', serialized),
-  initial: AsyncStorage.getItem('pb_auth'),
-});
-
-const client = new PocketBase(url, store);
+// const store = new AsyncAuthStore({
+//   save: async (serialized) => AsyncStorage.setItem('pb_auth', serialized),
+//   initial: AsyncStorage.getItem('pb_auth'),
+// });
+const url = 'https://bound-lesson.pockethost.io/';
+const client = new PocketBase(url);
 client.autoCancellation(false);
 
 const Login = () => {
-  const { setUserName, setEmail, setPassword, setRole, role, userName, email, password } =
-    useAuthStore();
-  const router = useRouter();
-
   const [recoverPassword, setRecoverPassword] = useState(false);
-  console.log('userName, password', userName, password);
+  const {
+    setUserName,
+    setEmail,
+    setPassword,
+    setRole,
+    role,
+    userName,
+    email,
+    password,
+    id,
+    setId,
+  } = useAuthStore();
+  const router = useRouter();
 
   const recover = () => {
     setRecoverPassword(!recoverPassword);
@@ -37,14 +45,23 @@ const Login = () => {
     try {
       const authData = await client.collection('users').authWithPassword(userName, password);
       if (authData) {
-        const userRole = client.authStore.model?.role;
-        if (userRole == 'supplier') {
-          router.replace('/(supplier)');
-        }
-        if (userRole == 'store') {
-          router.replace('/(store)');
-        } else if (userRole === 'admin') {
-          router.replace('/(admin)');
+        const user = client.authStore.model;
+        console.log('User from login screen--->', user);
+        if (user) {
+          setUserName(user.username);
+          setRole(user.role);
+          setId(user.id);
+
+          if (user.role) {
+            if (role === 'supplier') {
+              router.replace('/(supplier)');
+            }
+            if (user.role === 'store') {
+              router.replace('/(store)');
+            } else if (user.role === 'admin') {
+              router.replace('/(admin)');
+            }
+          }
         }
       }
     } catch (error: any) {
@@ -52,7 +69,6 @@ const Login = () => {
       console.log(error.data);
     } finally {
       setPassword('');
-      setUserName('');
     }
   };
 

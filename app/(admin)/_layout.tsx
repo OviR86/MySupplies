@@ -6,6 +6,7 @@ const AuthLayout = () => {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ title: 'Admin pannel' }} />
+      <Stack.Screen name="signup" options={{ title: 'Create new user account' }} />
     </Stack>
   );
 };

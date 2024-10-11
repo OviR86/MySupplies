@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import GeneralButton from '~/components/generalButton';
 import PocketBase from 'pocketbase';
 import { useRouter } from 'expo-router';
+import { Colors } from '~/assets/styles';
 
 import useAuthStore from '~/stores/authenticationStore';
 const url = 'https://bound-lesson.pockethost.io/';
@@ -17,6 +18,13 @@ const User = () => {
         title="Orders"
         style={{ width: '60%' }}
       />
+      <View
+        style={{
+          width: '80%',
+          borderColor: Colors.inactiveGray,
+          borderBottomWidth: 1,
+          marginBottom: 10,
+        }}></View>
       <GeneralButton OnPress={() => signOut(router)} title="Logout" style={{ width: '60%' }} />
     </View>
   );

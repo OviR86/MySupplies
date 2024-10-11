@@ -1,5 +1,13 @@
-import { StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
-import React from 'react';
+import {
+  ActivityIndicator,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  ViewStyle,
+} from 'react-native';
+import React, { useState } from 'react';
 import { Colors } from '~/assets/styles';
 import { customElevation } from '~/assets/styles';
 
@@ -11,11 +19,27 @@ export type GeneralButtontype = {
 };
 
 const GeneralButton = (props: GeneralButtontype) => {
+  const [loading, setLoading] = useState(false);
+  const handlePress = async () => {
+    setLoading(true);
+
+    try {
+      await props.OnPress();
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <TouchableOpacity
-      onPress={props.OnPress}
-      style={[styles.container, props.style, customElevation]}>
-      <Text style={[styles.text, props.textStyle]}>{props.title}</Text>
+      onPress={() => handlePress()}
+      style={[styles.container, props.style, customElevation, loading && styles.disabledButton]}
+      disabled={loading}>
+      {loading ? (
+        <ActivityIndicator color={Colors.blueGray} />
+      ) : (
+        <Text style={[styles.text, props.textStyle]}>{props.title}</Text>
+      )}
     </TouchableOpacity>
   );
 };
@@ -38,5 +62,8 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginHorizontal: 10,
     color: 'white',
+  },
+  disabledButton: {
+    backgroundColor: Colors.inactiveGray,
   },
 });

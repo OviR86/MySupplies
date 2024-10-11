@@ -2,15 +2,17 @@ import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, View } from 'reac
 import React, { useEffect, useState } from 'react';
 import PocketBase, { RecordModel } from 'pocketbase';
 import { Colors } from '~/assets/styles';
-const url = 'https://bound-lesson.pockethost.io/';
-const client = new PocketBase(url);
 import { capitalise, capitaliseFirst, formatDate } from '~/assets/helpers';
 import { ScrollView } from 'react-native-gesture-handler';
 import { customElevation } from '~/assets/styles';
+import useAuthStore from '~/stores/authenticationStore';
+const url = 'https://bound-lesson.pockethost.io/';
+const client = new PocketBase(url);
 
 const orders = () => {
   const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState<RecordModel[]>([]);
+  const { userName, signOut, role } = useAuthStore();
 
   const statusColors: Record<string, string> = {
     new: Colors.lightBlue,
@@ -22,12 +24,15 @@ const orders = () => {
   const getOrdersFromPocketbase = async () => {
     try {
       setLoading(true);
-      const records = await client.collection('orders').getFullList({
-        sort: '-created',
-      });
-      if (records != null) {
-        setOrders(records);
+      if (role === 'admin') {
+        const records = await client.collection('orders').getFullList({
+          sort: '-created',
+        });
+        if (records != null) {
+          setOrders(records);
+        }
       }
+
       setLoading(false);
     } catch (e: any) {
       Alert.alert(`Order send error:, ${e}`);

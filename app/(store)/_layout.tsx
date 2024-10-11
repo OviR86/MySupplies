@@ -1,12 +1,14 @@
 import { useRouter, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import { Colors } from '~/assets/styles';
 import { HeaderButton, HeaderButtonWithBadge } from '~/components/headerButton';
+import useAuthStore from '~/stores/authenticationStore';
 import useCartStore from '~/stores/cartStore';
 
 export default function Layout() {
   const { cartItems, totalQuantity } = useCartStore();
+  const { userName, id } = useAuthStore();
 
   const router = useRouter();
 
@@ -24,6 +26,7 @@ export default function Layout() {
                 color={Colors.inactiveGray}
                 size={24}
               />
+              <Text>{id}</Text>
               <HeaderButtonWithBadge
                 onPress={() => router.push('/basket')}
                 name="shopping-basket"

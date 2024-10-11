@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { Colors, customElevation } from '~/assets/styles';
+import { capitalise } from '~/assets/helpers';
 import CustomTextInput from '~/components/customTextInput';
 import GeneralButton from '~/components/generalButton';
 import DropDownMenu from '~/components/dropDownMenu';
@@ -33,14 +34,8 @@ const Signup = () => {
 
       const authData = await client.collection('users').authWithPassword(email, password);
       if (authData) {
-        const userRole = client.authStore.model?.role;
-        if (userRole === 'supplier') {
-          router.replace('/(supplier)');
-        } else if (userRole === 'store') {
-          router.replace('/(store)');
-        } else if (userRole === 'admin') {
-          router.replace('/(admin)');
-        }
+        const userRole = capitalise(client.authStore.model?.role);
+        alert(`${userRole} account created.`);
       }
     } catch (error: any) {
       console.error('Error creating user:', error.message);

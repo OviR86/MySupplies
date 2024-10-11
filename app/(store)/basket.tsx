@@ -10,16 +10,19 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import useCartStore from '~/stores/cartStore';
 import { capitalise } from '~/assets/helpers';
 import PocketBase from 'pocketbase';
+import useAuthStore from '~/stores/authenticationStore';
 const url = 'https://bound-lesson.pockethost.io/';
 const client = new PocketBase(url);
 
 const Basket = () => {
   const router = useRouter();
   const { cartItems, totalQuantity, clearCart } = useCartStore();
+  const { userName, id } = useAuthStore();
 
   const sendOrder = async () => {
     const data = {
-      user: 'Ovidiu-placeholder',
+      userId: id,
+      user: userName,
       items: cartItems,
       status: 'new',
     };
@@ -38,6 +41,7 @@ const Basket = () => {
       }
     } catch (e: any) {
       Alert.alert(`Order send error:, ${e}`);
+      console.log(`Order send error:, ${e.data}`);
     }
   };
 
