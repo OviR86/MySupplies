@@ -13,7 +13,10 @@ export default function Layout() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      console.log('checkAuth-client.authStore.isValid-->', client.authStore.isValid);
+      console.log(
+        'Main _layout file: checkAuth-client.authStore.isValid-->',
+        client.authStore.isValid
+      );
 
       const isValidAuth = client.authStore.isValid;
       const userRole = client.authStore.model?.role;

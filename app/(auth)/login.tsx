@@ -5,7 +5,6 @@ import { Colors, customElevation } from '~/assets/styles';
 import PocketBase, { AsyncAuthStore, RecordAuthResponse } from 'pocketbase';
 import { useRouter } from 'expo-router';
 import useAuthStore from '~/stores/authenticationStore';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WithSecureTextToggle from '~/components/withSecureTextToggle';
 import GeneralButton from '~/components/generalButton';
@@ -59,6 +58,7 @@ const Login = () => {
       console.log(error.data);
     } finally {
       setPassword('');
+      console.log('Login page--> client.authStore.token:', client.authStore.token);
     }
   };
 
@@ -156,7 +156,6 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 25,
     fontWeight: 'bold',
-
     marginBottom: 5,
   },
   callToAction: {
