@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Orders from '~/components/ordersPage';
 
-const OrdersStore = () => {
+const OrdersAdmin = () => {
   return (
     <>
       <Orders />
@@ -10,6 +10,6 @@ const OrdersStore = () => {
   );
 };
 
-export default OrdersStore;
+export default OrdersAdmin;
 
 const styles = StyleSheet.create({});

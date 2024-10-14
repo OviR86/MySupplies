@@ -21,7 +21,7 @@ const withSecureTextToggle = <P extends object>(Component: React.ComponentType<P
           size={24}
           color={Colors.purpleMid}
           onPress={toggleSecureTextEntry}
-          style={{ position: 'absolute', left: 250, top: 13 }}
+          style={{ position: 'absolute', right: 20, top: 13 }}
         />
       </View>
     );

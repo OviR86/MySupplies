@@ -9,22 +9,11 @@ const url = 'https://bound-lesson.pockethost.io/';
 const client = new PocketBase(url);
 
 const AdminPannel = () => {
-  const { userName } = useAuthStore();
+  const { userName, signOut } = useAuthStore();
   const router = useRouter();
 
-  const signOutFromAdminPage = () => {
-    if (client.authStore.isValid) {
-      // Clear the auth store to log out the user if the token exists
-      client.authStore.clear();
-      console.log('User signed out successfully.');
-
-      if (!client.authStore.isValid) {
-        router.replace('/(auth)/login');
-      }
-    } else {
-      console.log('No active session found.');
-      console.log('Admin index page--> client.authStore.token:', client.authStore.token);
-    }
+  const handleLogout = () => {
+    signOut(router);
   };
 
   return (
@@ -43,7 +32,7 @@ const AdminPannel = () => {
         style={{ width: '60%' }}
       />
       <GeneralButton
-        OnPress={() => router.push('/(store)/orders')}
+        OnPress={() => router.push('/orders')}
         title="View orders"
         style={{ width: '60%' }}
       />
@@ -52,6 +41,7 @@ const AdminPannel = () => {
         title="View abandoned carts"
         style={{ width: '60%' }}
       />
+
       <View
         style={{
           width: '80%',
@@ -59,11 +49,7 @@ const AdminPannel = () => {
           borderBottomWidth: 1,
           marginBottom: 10,
         }}></View>
-      <GeneralButton
-        OnPress={() => signOutFromAdminPage()}
-        title="Logout"
-        style={{ width: '60%' }}
-      />
+      <GeneralButton OnPress={() => handleLogout()} title="Logout" style={{ width: '60%' }} />
     </View>
   );
 };

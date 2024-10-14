@@ -16,7 +16,7 @@ type AuthState = {
   setPassword: (password: string) => void;
   setRole: (role: string) => void;
   setId: (id: string) => void;
-  // signOut: (router: Router) => void;
+  signOut: (router: Router) => void;
 };
 
 const useAuthStore = create<AuthState>((set) => ({
@@ -31,20 +31,27 @@ const useAuthStore = create<AuthState>((set) => ({
   setRole: (role) => set({ role }),
   setId: (id) => set({ id }),
 
-  // signOut: (router: Router) => {
-  //   if (client.authStore.isValid) {
-  //     // Clear the auth store to log out the user if the token exists
-  //     client.authStore.clear();
-  //     console.log('User signed out successfully.');
-  //     useAuthStore.getState().setUserName('');
-  //     useAuthStore.getState().setPassword('');
-  //     if (!client.authStore.isValid) {
-  //       router.replace('/(auth)/login');
-  //     }
-  //   } else {
-  //     console.log('No active session found.');
-  //   }
-  // },
+  signOut: async (router: Router) => {
+    try {
+      await client.authStore.clear();
+      console.log('User signed out successfully.');
+      set({
+        userName: '',
+        email: '',
+        password: '',
+        role: '',
+        id: '',
+      });
+
+      router.replace('/(auth)/login');
+      console.log(
+        'LOGOUT from auth store router.replace--success--client.authStore-->',
+        client.authStore
+      );
+    } catch (error) {
+      console.error('Error during sign out:', error);
+    }
+  },
 }));
 
 export default useAuthStore;

@@ -8,7 +8,7 @@ import useCartStore from '~/stores/cartStore';
 
 export default function Layout() {
   const { cartItems, totalQuantity } = useCartStore();
-  const { userName, id } = useAuthStore();
+  const { userName } = useAuthStore();
 
   const router = useRouter();
 

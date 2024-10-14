@@ -9,10 +9,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import WithSecureTextToggle from '~/components/withSecureTextToggle';
 import GeneralButton from '~/components/generalButton';
 
-// const store = new AsyncAuthStore({
-//   save: async (serialized) => AsyncStorage.setItem('pb_auth', serialized),
-//   initial: AsyncStorage.getItem('pb_auth'),
-// });
 const url = 'https://bound-lesson.pockethost.io/';
 const client = new PocketBase(url);
 client.autoCancellation(false);
@@ -42,13 +38,12 @@ const Login = () => {
           setId(user.id);
 
           if (user.role) {
-            if (role === 'supplier') {
-              router.replace('/(supplier)');
-            }
             if (user.role === 'store') {
               router.replace('/(store)');
             } else if (user.role === 'admin') {
               router.replace('/(admin)');
+            } else if (user.role === 'supplier') {
+              router.replace('/(supplier)');
             }
           }
         }

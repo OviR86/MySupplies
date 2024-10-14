@@ -1,23 +1,16 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect } from 'react';
-import PocketBase from 'pocketbase';
-import { useRouter } from 'expo-router';
-import { Colors } from '~/assets/styles';
-import useAuthStore from '~/stores/authenticationStore';
+import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
 import GeneralButton from '~/components/generalButton';
-const url = 'https://bound-lesson.pockethost.io/';
-const client = new PocketBase(url);
+import useAuthStore from '~/stores/authenticationStore';
+import { useRouter } from 'expo-router';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const User = () => {
   const { signOut } = useAuthStore();
   const router = useRouter();
   return (
     <View style={styles.container}>
-      <GeneralButton
-        OnPress={() => router.replace('/orders')}
-        title="Orders"
-        style={{ width: '60%' }}
-      />
+      <Text>Supplier user page</Text>
       <View
         style={{
           width: '80%',
