@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import Orders from '~/components/ordersPage';
 
 const SupplierOrdersScreen = () => {
   return (
-    <View>
-      <Text>SupplierOrdersScreen</Text>
-    </View>
+    <>
+      <Orders />
+    </>
   );
 };
 

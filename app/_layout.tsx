@@ -4,12 +4,26 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { SafeAreaView } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import PocketBase from 'pocketbase';
-const url = 'https://bound-lesson.pockethost.io/';
-const client = new PocketBase(url);
+import PocketBase, { AsyncAuthStore, RecordAuthResponse } from 'pocketbase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import useAuthStore from '~/stores/authenticationStore';
 
+const url = 'https://bound-lesson.pockethost.io/';
+
+const store = new AsyncAuthStore({
+  save: async (serialized) => {
+    console.log('token=====>', serialized);
+    AsyncStorage.setItem('pb_auth', serialized);
+  },
+  initial: AsyncStorage.getItem('pb_auth'),
+});
+
+const client = new PocketBase(url, store);
+client.autoCancellation(false);
 export default function Layout() {
   const router = useRouter();
+  const { setUserName, setEmail, setPassword, setRole, role, userName, email, password, setId } =
+    useAuthStore();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -19,6 +33,12 @@ export default function Layout() {
       );
 
       const isValidAuth = client.authStore.isValid;
+      if (isValidAuth) {
+        const user = client.authStore.model;
+        setUserName(user?.username);
+        setRole(user?.role);
+        setId(user?.id);
+      }
       const userRole = client.authStore.model?.role;
 
       if (isValidAuth && userRole) {

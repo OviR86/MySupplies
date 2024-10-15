@@ -1,10 +1,9 @@
 import { create } from 'zustand';
-import PocketBase from 'pocketbase';
 import { Router } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import PocketBase, { AsyncAuthStore, RecordAuthResponse } from 'pocketbase';
 
-const url = 'https://bound-lesson.pockethost.io/';
-const client = new PocketBase(url);
-
+import DB from '~/app/db';
 type AuthState = {
   userName: string;
   email: string;
@@ -33,7 +32,7 @@ const useAuthStore = create<AuthState>((set) => ({
 
   signOut: async (router: Router) => {
     try {
-      await client.authStore.clear();
+      await DB.authStore.clear();
       console.log('User signed out successfully.');
       set({
         userName: '',
@@ -44,10 +43,7 @@ const useAuthStore = create<AuthState>((set) => ({
       });
 
       router.replace('/(auth)/login');
-      console.log(
-        'LOGOUT from auth store router.replace--success--client.authStore-->',
-        client.authStore
-      );
+      console.log('LOGOUT from auth store router.replace--success--DB.authStore-->', DB.authStore);
     } catch (error) {
       console.error('Error during sign out:', error);
     }

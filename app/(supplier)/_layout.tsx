@@ -12,7 +12,7 @@ export default function Layout() {
       <Stack.Screen
         name="index"
         options={{
-          title: 'Comenzi de procesat',
+          title: 'Comenzi',
           headerRight: () => (
             <View style={{ flexDirection: 'row', gap: 30, alignItems: 'center' }}>
               <Text style={{ fontSize: 11, color: Colors.inactiveGray }}>Welcome, {userName}</Text>

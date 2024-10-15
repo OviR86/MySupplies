@@ -9,10 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import WithSecureTextToggle from '~/components/withSecureTextToggle';
 import GeneralButton from '~/components/generalButton';
 
-const url = 'https://bound-lesson.pockethost.io/';
-const client = new PocketBase(url);
-client.autoCancellation(false);
-
+import DB from '../db';
 const Login = () => {
   const [recoverPassword, setRecoverPassword] = useState(false);
   const { setUserName, setEmail, setPassword, setRole, role, userName, email, password, setId } =
@@ -28,9 +25,9 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const authData = await client.collection('users').authWithPassword(userName, password);
+      const authData = await DB.collection('users').authWithPassword(userName, password);
       if (authData) {
-        const user = client.authStore.model;
+        const user = DB.authStore.model;
         console.log('User from login screen--->', user);
         if (user) {
           setUserName(user.username);
@@ -53,7 +50,7 @@ const Login = () => {
       console.log(error.data);
     } finally {
       setPassword('');
-      console.log('Login page--> client.authStore.token:', client.authStore.token);
+      console.log('Login page--> DB.authStore.token:', DB.authStore.token);
     }
   };
 

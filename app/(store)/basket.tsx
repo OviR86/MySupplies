@@ -41,7 +41,7 @@ const Basket = () => {
       }
     } catch (e: any) {
       Alert.alert(`Order send error:, ${e}`);
-      console.log(`Order send error:, ${e.originalError}`);
+      console.log(`Order send error:, ${JSON.stringify(e, null, 2)}`);
     }
   };
 
