@@ -9,7 +9,7 @@ const url = 'https://bound-lesson.pockethost.io/';
 const client = new PocketBase(url);
 
 const AdminPannel = () => {
-  const { userName, signOut } = useAuthStore();
+  const { userData, signOut } = useAuthStore();
   const router = useRouter();
 
   const handleLogout = () => {
@@ -18,12 +18,17 @@ const AdminPannel = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome, {userName}</Text>
+      <Text style={styles.title}>Welcome, {userData?.userName}</Text>
       <Text style={styles.callToAction}>Choose your next action:</Text>
 
       <GeneralButton
         OnPress={() => router.push('/signup')}
         title="Create user"
+        style={{ width: '60%' }}
+      />
+      <GeneralButton
+        OnPress={() => router.push('/users')}
+        title="View users"
         style={{ width: '60%' }}
       />
       <GeneralButton

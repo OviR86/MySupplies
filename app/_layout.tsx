@@ -22,8 +22,7 @@ const client = new PocketBase(url, store);
 client.autoCancellation(false);
 export default function Layout() {
   const router = useRouter();
-  const { setUserName, setEmail, setPassword, setRole, role, userName, email, password, setId } =
-    useAuthStore();
+  const { setUserData } = useAuthStore();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -35,9 +34,12 @@ export default function Layout() {
       const isValidAuth = client.authStore.isValid;
       if (isValidAuth) {
         const user = client.authStore.model;
-        setUserName(user?.username);
-        setRole(user?.role);
-        setId(user?.id);
+        setUserData({
+          userName: user?.username,
+          email: user?.email,
+          role: user?.role,
+          id: user?.id,
+        });
       }
       const userRole = client.authStore.model?.role;
 

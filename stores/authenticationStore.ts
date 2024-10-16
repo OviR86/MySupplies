@@ -1,10 +1,18 @@
 import { create } from 'zustand';
 import { Router } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import PocketBase, { AsyncAuthStore, RecordAuthResponse } from 'pocketbase';
-
 import DB from '~/app/db';
+
+type UserData = {
+  userName: string;
+  email: string;
+  role: string;
+  id: string;
+};
+
 type AuthState = {
+  userData: UserData | null;
+  setUserData: (data: UserData) => void;
+  clearUserData: () => void;
   userName: string;
   email: string;
   password: string;
@@ -19,6 +27,9 @@ type AuthState = {
 };
 
 const useAuthStore = create<AuthState>((set) => ({
+  userData: null,
+  setUserData: (data) => set({ userData: data }),
+  clearUserData: () => set({ userData: null }),
   userName: '',
   email: '',
   password: '',
@@ -40,6 +51,7 @@ const useAuthStore = create<AuthState>((set) => ({
         password: '',
         role: '',
         id: '',
+        userData: null,
       });
 
       router.replace('/(auth)/login');

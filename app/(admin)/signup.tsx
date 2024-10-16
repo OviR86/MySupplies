@@ -5,18 +5,13 @@ import { capitalise } from '~/assets/helpers';
 import CustomTextInput from '~/components/customTextInput';
 import GeneralButton from '~/components/generalButton';
 import DropDownMenu from '~/components/dropDownMenu';
-import PocketBase from 'pocketbase';
-import { useRouter } from 'expo-router';
 import useAuthStore from '~/stores/authenticationStore';
 import WithSecureTextToggle from '~/components/withSecureTextToggle';
-const url = 'https://bound-lesson.pockethost.io/';
-const client = new PocketBase(url);
-client.autoCancellation(false);
+import DB from '../db';
 
 const Signup = () => {
-  const router = useRouter();
-  const { setUserName, setEmail, setPassword, role, userName, email, password } = useAuthStore();
-  console.log('role-->', role);
+  const { setUserName, setEmail, setPassword, setRole, role, userName, email, password } =
+    useAuthStore();
 
   const createUser = async () => {
     const data = {
@@ -30,18 +25,19 @@ const Signup = () => {
     console.log('Create user data--->', data);
 
     try {
-      const record = await client.collection('users').create(data);
+      const record = await DB.collection('users').create(data);
 
-      const authData = await client.collection('users').authWithPassword(email, password);
-      if (authData) {
-        const userRole = capitalise(client.authStore.model?.role);
-        alert(`${userRole} account created.`);
+      if (record) {
+        const temporaryRole = capitalise(record.role);
+        alert(`New ${temporaryRole} account created.`);
       }
     } catch (error: any) {
-      console.error('Error creating user:', error.message);
+      console.error('Error creating user:', JSON.stringify(error, null, 2));
     } finally {
       setPassword('');
       setUserName('');
+      setEmail('');
+      setRole('');
     }
   };
   return (
@@ -121,3 +117,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+function setRole(arg0: string) {
+  throw new Error('Function not implemented.');
+}

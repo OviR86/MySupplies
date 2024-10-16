@@ -17,14 +17,14 @@ const client = new PocketBase(url);
 const Basket = () => {
   const router = useRouter();
   const { cartItems, totalQuantity, clearCart } = useCartStore();
-  const { userName, id } = useAuthStore();
+  const { userData } = useAuthStore();
 
   const sendOrder = async () => {
     const data = {
-      user: userName,
+      user: userData?.userName,
       items: cartItems,
       status: 'new',
-      userId: id,
+      userId: userData?.id,
     };
     try {
       const record = await client.collection('orders').create(data);

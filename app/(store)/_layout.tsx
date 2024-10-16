@@ -8,7 +8,7 @@ import useCartStore from '~/stores/cartStore';
 
 export default function Layout() {
   const { cartItems, totalQuantity } = useCartStore();
-  const { userName } = useAuthStore();
+  const { userData } = useAuthStore();
 
   const router = useRouter();
 
@@ -20,7 +20,9 @@ export default function Layout() {
           title: 'Produse',
           headerRight: () => (
             <View style={{ flexDirection: 'row', gap: 30, alignItems: 'center' }}>
-              <Text style={{ fontSize: 11, color: Colors.inactiveGray }}>Welcome, {userName}</Text>
+              <Text style={{ fontSize: 11, color: Colors.inactiveGray }}>
+                Welcome, {userData?.userName}
+              </Text>
               <HeaderButton
                 onPress={() => router.push('/user')}
                 name="user-circle"

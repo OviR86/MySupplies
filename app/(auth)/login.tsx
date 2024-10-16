@@ -12,8 +12,18 @@ import GeneralButton from '~/components/generalButton';
 import DB from '../db';
 const Login = () => {
   const [recoverPassword, setRecoverPassword] = useState(false);
-  const { setUserName, setEmail, setPassword, setRole, role, userName, email, password, setId } =
-    useAuthStore();
+  const {
+    setUserName,
+    setEmail,
+    setPassword,
+    setRole,
+    role,
+    userName,
+    email,
+    password,
+    setId,
+    setUserData,
+  } = useAuthStore();
   const router = useRouter();
 
   const recover = () => {
@@ -30,10 +40,12 @@ const Login = () => {
         const user = DB.authStore.model;
         console.log('User from login screen--->', user);
         if (user) {
-          setUserName(user.username);
-          setRole(user.role);
-          setId(user.id);
-
+          setUserData({
+            userName: user.username,
+            email: user.email,
+            role: user.role,
+            id: user.id,
+          });
           if (user.role) {
             if (user.role === 'store') {
               router.replace('/(store)');
