@@ -1,10 +1,12 @@
-import { ActivityIndicator, FlatList, SectionList, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, SectionList, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import DB from '../db';
 import { RecordModel } from 'pocketbase';
 import { capitalise } from '../../assets/helpers';
 import { Colors, customElevation } from '~/assets/styles';
 import { HeaderButton } from '~/components/headerButton';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import UserDeleteBottomSheet from '~/components/userDeleteBottomSheet';
 
 type Section = {
   title: string;
@@ -28,8 +30,9 @@ const groupByRole = (data: RecordModel[]): Section[] => {
 const Users = () => {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<RecordModel[]>([]);
+  const [selectedUser, setSelectedUser] = useState<{ id: string; name: string } | null>(null);
   const sections: Section[] = groupByRole(users);
-
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
   const fetchUsers = async () => {
     try {
       setLoading(true);
@@ -46,13 +49,24 @@ const Users = () => {
     fetchUsers();
   }, []);
 
-  const userCard = (item: RecordModel) => {
+  const openDeleteSheet = (id: string, name: string) => {
+    setSelectedUser({ id, name }); // Store the user to be deleted
+    bottomSheetRef.current?.present(); // Open the bottom sheet
+  };
+
+  type UserCardType = {
+    item: RecordModel;
+  };
+
+  const userCard = (props: UserCardType) => {
+    const handleDeletePress = () => {};
+
     return (
       <View style={[styles.userCard, customElevation]}>
         <View>
-          <Text>Role: {capitalise(item.role)}</Text>
-          <Text>{item.username}</Text>
-          <Text>{item.email}</Text>
+          <Text>Role: {capitalise(props.item.role)}</Text>
+          <Text>{props.item.username}</Text>
+          <Text>{props.item.email}</Text>
         </View>
         <View
           style={{
@@ -65,16 +79,14 @@ const Users = () => {
             name="trash"
             color={Colors.red}
             size={20}
-            onPress={() => {
-              deleteUser(item.id, item.username);
-            }}
+            onPress={() => openDeleteSheet(props.item.id, props.item.username)}
           />
           <HeaderButton
             name="pencil"
             color={Colors.purpleDark}
             size={20}
             onPress={() => {
-              editUser(item.id, item.username);
+              editUser(props.item.id, props.item.username);
             }}
           />
         </View>
@@ -109,6 +121,15 @@ const Users = () => {
         <ActivityIndicator size="large" color={Colors.purpleMid} />
       ) : (
         <>
+          {selectedUser && (
+            <UserDeleteBottomSheet
+              ref={bottomSheetRef}
+              userName={selectedUser.name}
+              onDelete={deleteUser}
+              userId={selectedUser.id}
+            />
+          )}
+
           <SectionList
             contentContainerStyle={{ paddingBottom: 20 }}
             sections={sections}
@@ -116,7 +137,7 @@ const Users = () => {
             renderSectionHeader={({ section }: { section: Section }) => (
               <Text style={styles.header}>{capitalise(section.title)}</Text>
             )}
-            renderItem={({ item }) => userCard(item)}
+            renderItem={(item) => userCard(item)}
           />
         </>
       )}

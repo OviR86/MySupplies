@@ -21,7 +21,6 @@ const client = new PocketBase(url);
 client.autoCancellation(false);
 
 const Index = () => {
-  const { userName, id } = useAuthStore();
   const [suplyList, setSuplyList] = useState<RecordModel[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);

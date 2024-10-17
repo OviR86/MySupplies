@@ -1,29 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import CustomTextInput from '~/components/customTextInput';
 import { Colors, customElevation } from '~/assets/styles';
-import PocketBase, { AsyncAuthStore, RecordAuthResponse } from 'pocketbase';
 import { useRouter } from 'expo-router';
 import useAuthStore from '~/stores/authenticationStore';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import WithSecureTextToggle from '~/components/withSecureTextToggle';
 import GeneralButton from '~/components/generalButton';
 
 import DB from '../db';
 const Login = () => {
   const [recoverPassword, setRecoverPassword] = useState(false);
-  const {
-    setUserName,
-    setEmail,
-    setPassword,
-    setRole,
-    role,
-    userName,
-    email,
-    password,
-    setId,
-    setUserData,
-  } = useAuthStore();
+  const { setUserName, setEmail, setPassword, userName, email, password, setUserData } =
+    useAuthStore();
   const router = useRouter();
 
   const recover = () => {

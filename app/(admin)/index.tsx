@@ -3,10 +3,7 @@ import React from 'react';
 import { useRouter } from 'expo-router';
 import useAuthStore from '~/stores/authenticationStore';
 import { Colors } from '~/assets/styles';
-import PocketBase from 'pocketbase';
 import GeneralButton from '~/components/generalButton';
-const url = 'https://bound-lesson.pockethost.io/';
-const client = new PocketBase(url);
 
 const AdminPannel = () => {
   const { userData, signOut } = useAuthStore();

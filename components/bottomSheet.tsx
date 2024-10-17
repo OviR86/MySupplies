@@ -32,7 +32,6 @@ const BottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
   };
 
   const addQuantity = (item: Item, quantity: number) => {
-    //DE REZOLVAT TYPE PENTRY UPDATEDOBJECT
     const updatedObject = {
       ...item,
       quantity,
