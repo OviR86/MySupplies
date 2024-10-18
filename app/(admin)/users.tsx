@@ -3,10 +3,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import DB from '../db';
 import { RecordModel } from 'pocketbase';
 import { capitalise } from '../../assets/helpers';
-import { Colors, customElevation } from '~/assets/styles';
-import { HeaderButton } from '~/components/headerButton';
+import { Colors } from '~/assets/styles';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import UserDeleteBottomSheet from '~/components/userDeleteBottomSheet';
+import UserCard from '~/components/userCard';
+import { router } from 'expo-router';
+import useAuthStore from '~/stores/authenticationStore';
 
 type Section = {
   title: string;
@@ -33,6 +35,9 @@ const Users = () => {
   const [selectedUser, setSelectedUser] = useState<{ id: string; name: string } | null>(null);
   const sections: Section[] = groupByRole(users);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const { setUserName, setEmail, setRole, setId } = useAuthStore();
+
   const fetchUsers = async () => {
     try {
       setLoading(true);
@@ -54,47 +59,6 @@ const Users = () => {
     bottomSheetRef.current?.present(); // Open the bottom sheet
   };
 
-  type UserCardType = {
-    item: RecordModel;
-  };
-
-  const userCard = (props: UserCardType) => {
-    const handleDeletePress = () => {};
-
-    return (
-      <View style={[styles.userCard, customElevation]}>
-        <View>
-          <Text>Role: {capitalise(props.item.role)}</Text>
-          <Text>{props.item.username}</Text>
-          <Text>{props.item.email}</Text>
-        </View>
-        <View
-          style={{
-            alignItems: 'flex-end',
-            justifyContent: 'space-between',
-            flex: 1,
-            paddingRight: 20,
-          }}>
-          <HeaderButton
-            name="trash"
-            color={Colors.red}
-            size={20}
-            onPress={() => openDeleteSheet(props.item.id, props.item.username)}
-          />
-          <HeaderButton
-            name="pencil"
-            color={Colors.purpleDark}
-            size={20}
-            onPress={() => {
-              editUser(props.item.id, props.item.username);
-            }}
-          />
-        </View>
-      </View>
-    );
-  };
-
-  //NOT FINAL FUNCTION. NEED TO CREATE A MODAL TO WARN USER ABOUT DELETING THE USER
   const deleteUser = async (id: string, name: string) => {
     try {
       await DB.collection('users').delete(id);
@@ -104,15 +68,14 @@ const Users = () => {
       console.log('error--->', JSON.stringify(error, null, 2));
     }
   };
-  //NOT FINAL FUNCTION. NEED TO CREATE A MODAL TO WARN USER ABOUT EDITING THE USER
-  const editUser = async (id: string, name: string) => {
-    try {
-      await DB.collection('users').update(id, { username: name });
-      setUsers(users.map((user) => (user.id === id ? { ...user, username: name } : user)));
-      alert(`User ${capitalise(name)} updated`);
-    } catch (error) {
-      console.log('error--->', JSON.stringify(error, null, 2));
-    }
+
+  const handleEditUser = (user: RecordModel) => {
+    setId(user.id);
+    setUserName(user.username);
+    setEmail(user.email);
+    setRole(user.role);
+
+    router.push('/(admin)/editUser');
   };
 
   return (
@@ -131,13 +94,20 @@ const Users = () => {
           )}
 
           <SectionList
+            showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 20 }}
             sections={sections}
             keyExtractor={(item) => item.id}
             renderSectionHeader={({ section }: { section: Section }) => (
               <Text style={styles.header}>{capitalise(section.title)}</Text>
             )}
-            renderItem={(item) => userCard(item)}
+            renderItem={({ item }) => (
+              <UserCard
+                openDeleteSheet={openDeleteSheet}
+                item={item}
+                onEdit={() => handleEditUser(item)}
+              />
+            )}
           />
         </>
       )}
@@ -152,14 +122,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  userCard: {
-    flexDirection: 'row',
-    minWidth: '95%',
-    padding: 10,
-    margin: 10,
-    backgroundColor: 'white',
-    borderRadius: 10,
   },
   header: {
     fontSize: 24,

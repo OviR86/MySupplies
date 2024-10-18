@@ -19,11 +19,12 @@ const AuthLayout = () => {
               name="user-plus"
               color={Colors.purpleDark}
               size={23}
-              onPress={() => router.push('/signup')}
+              onPress={() => router.replace('/signup')}
             />
           ),
         }}
       />
+      <Stack.Screen name="editUser" options={{ title: 'Edit user details' }} />
     </Stack>
   );
 };
