@@ -6,13 +6,12 @@ import { capitalise, formatDate } from '~/assets/helpers';
 import { ScrollView } from 'react-native-gesture-handler';
 import { customElevation } from '~/assets/styles';
 import useAuthStore from '~/stores/authenticationStore';
-const url = 'https://bound-lesson.pockethost.io/';
-const client = new PocketBase(url);
+import DB from '~/app/db';
 
 const Orders = () => {
   const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState<RecordModel[]>([]);
-  const { role, id } = useAuthStore();
+  const { userData } = useAuthStore();
 
   const statusColors: Record<string, string> = {
     new: Colors.lightBlue,
@@ -22,18 +21,21 @@ const Orders = () => {
   };
 
   const getOrdersFromPocketbase = async () => {
+    console.log('getOrdersFromPocketbase role--->', userData?.role);
+
     try {
       setLoading(true);
-      if (role === 'admin' || role === 'supplier') {
-        const records = await client.collection('orders').getFullList({
+      if (userData?.role === 'admin' || userData?.role === 'supplier') {
+        const records = await DB.collection('orders').getFullList({
           sort: '-created',
         });
         if (records != null) {
           setOrders(records);
         }
       } else {
-        const records = await client.collection('orders').getFullList({
-          filter: `userId="${id}"`,
+        const records = await DB.collection('orders').getFullList({
+          filter: `userId="${userData?.id}"`,
+          sort: '-created',
         });
         if (records != null) {
           setOrders(records);

@@ -43,7 +43,6 @@ const Users = () => {
       setLoading(true);
       const users = await DB.collection('users').getFullList();
       setUsers(users);
-      console.log('users--->', JSON.stringify(users, null, 2));
     } catch (error) {
       console.log('error--->', JSON.stringify(error, null, 2));
     } finally {

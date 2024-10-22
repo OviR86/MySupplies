@@ -25,6 +25,7 @@ const AuthLayout = () => {
         }}
       />
       <Stack.Screen name="editUser" options={{ title: 'Edit user details' }} />
+      <Stack.Screen name="addProduct" options={{ title: 'Add new product' }} />
     </Stack>
   );
 };

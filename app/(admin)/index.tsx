@@ -17,10 +17,9 @@ const AdminPannel = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Welcome, {userData?.userName}</Text>
       <Text style={styles.callToAction}>Choose your next action:</Text>
-
       <GeneralButton
-        OnPress={() => router.push('/signup')}
-        title="Create user"
+        OnPress={() => router.push('/orders')}
+        title="View orders"
         style={{ width: '60%' }}
       />
       <GeneralButton
@@ -29,15 +28,17 @@ const AdminPannel = () => {
         style={{ width: '60%' }}
       />
       <GeneralButton
-        OnPress={() => alert('Add new product-TBA')}
+        OnPress={() => router.push('/signup')}
+        title="Create user"
+        style={{ width: '60%' }}
+      />
+
+      <GeneralButton
+        OnPress={() => router.push('/addProduct')}
         title="Add new product"
         style={{ width: '60%' }}
       />
-      <GeneralButton
-        OnPress={() => router.push('/orders')}
-        title="View orders"
-        style={{ width: '60%' }}
-      />
+
       <GeneralButton
         OnPress={() => alert('View abandoned carts-TBA')}
         title="View abandoned carts"
