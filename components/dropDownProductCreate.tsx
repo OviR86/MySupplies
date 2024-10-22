@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Colors, customElevation } from '~/assets/styles';
 import useAuthStore from '~/stores/authenticationStore';
+
+type DropDounProductCreateProps = {
+  useCase: string;
+  supplier?: string;
+  setSupplier?: (value: string) => void;
+  category?: string;
+  setCategory?: (value: string) => void;
+};
 
 const data = [
   { label: 'Admin', value: 'admin' },
@@ -11,15 +19,34 @@ const data = [
   { label: 'Store', value: 'store' },
 ];
 
-const DropdownComponent = () => {
-  const { setRole, role } = useAuthStore();
+const supplierData = [
+  { label: 'Depozit', value: 'depozit' },
+  { label: 'IT', value: 'IT' },
+];
+
+const categoryData = [
+  { label: 'Igiena', value: 'igiena' },
+  { label: 'Papetarie', value: 'papetarie' },
+  { label: 'Consumabile IT', value: 'consubamileIt' },
+  { label: 'Online', value: 'online' },
+  { label: 'Curier', value: 'curier' },
+];
+
+const DropDounProductCreate = ({
+  useCase,
+  supplier,
+  setSupplier,
+  category,
+  setCategory,
+}: DropDounProductCreateProps) => {
   const renderItem = (item: any) => {
     return (
       <View style={styles.item}>
         <Text style={styles.textItem}>{item.label}</Text>
-        {item.value === role && (
-          <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-        )}
+        {item.value === supplier ||
+          (item.value === category && (
+            <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
+          ))}
       </View>
     );
   };
@@ -31,13 +58,17 @@ const DropdownComponent = () => {
       containerStyle={{ borderRadius: 30, borderColor: Colors.purpleMid, borderWidth: 1 }}
       selectedTextStyle={styles.selectedTextStyle}
       iconStyle={styles.iconStyle}
-      data={data}
+      data={useCase === 'supplier' ? supplierData : categoryData}
       maxHeight={300}
       labelField="label"
       valueField="value"
-      placeholder="Select user role..."
-      value={role}
-      onChange={(item) => setRole(item.value)}
+      placeholder={
+        useCase === 'supplier' ? 'Select product supplier...' : 'Select product category...'
+      }
+      value={useCase === 'supplier' ? supplier : category}
+      onChange={(item) =>
+        useCase === 'supplier' ? setSupplier!(item.value) : setCategory!(item.value)
+      }
       renderLeftIcon={() => (
         <AntDesign style={styles.icon} color={Colors.inactiveGray} name="Safety" size={16} />
       )}
@@ -47,7 +78,7 @@ const DropdownComponent = () => {
   );
 };
 
-export default DropdownComponent;
+export default DropDounProductCreate;
 
 const styles = StyleSheet.create({
   dropdown: {
