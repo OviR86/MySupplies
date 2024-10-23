@@ -18,7 +18,7 @@ const AddProduct = () => {
   const [category, setCategory] = useState('');
 
   const takePhoto = async (): Promise<void> => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       quality: 1,
@@ -50,8 +50,8 @@ const AddProduct = () => {
 
         console.log('Form Data-->', JSON.stringify(formData, null, 2));
 
-        // Use the DB instance to create the record
         const record = await DB.collection('supplies').create(formData);
+        alert('Product saved');
         router.push('/(admin)');
         console.log('Record created successfully:', JSON.stringify(record, null, 2));
       } catch (error: any) {
@@ -68,7 +68,8 @@ const AddProduct = () => {
       <Text style={styles.welcome}>{userData?.userName},</Text>
       <Text style={styles.callToAction}>This is where you can add a new product.</Text>
       <Text style={[styles.callToAction, { marginBottom: 20 }]}>Fill out all the details!</Text>
-
+      <DropDounProductCreate useCase="supplier" supplier={supplier} setSupplier={setSupplier} />
+      <DropDounProductCreate useCase="category" category={category} setCategory={setCategory} />
       <CustomTextInput
         textStyle={[styles.textInput, customElevation]}
         placeholder="Product name..."
@@ -83,8 +84,7 @@ const AddProduct = () => {
         onChangeText={(text) => setOrderUnit(text)}
         value={orderUnit}
       />
-      <DropDounProductCreate useCase="supplier" supplier={supplier} setSupplier={setSupplier} />
-      <DropDounProductCreate useCase="category" category={category} setCategory={setCategory} />
+
       <View style={styles.addImageContainer}>
         <Text style={[styles.callToAction, { marginBottom: 20 }]}>Choose image</Text>
 
