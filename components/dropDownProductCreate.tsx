@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Colors, customElevation } from '~/assets/styles';
-import useAuthStore from '~/stores/authenticationStore';
 
 type DropDounProductCreateProps = {
   useCase: string;
@@ -12,12 +11,6 @@ type DropDounProductCreateProps = {
   category?: string;
   setCategory?: (value: string) => void;
 };
-
-const data = [
-  { label: 'Admin', value: 'admin' },
-  { label: 'Supplier', value: 'supplier' },
-  { label: 'Store', value: 'store' },
-];
 
 const supplierData = [
   { label: 'Depozit', value: 'depozit' },

@@ -7,52 +7,59 @@ import GeneralButton from '~/components/generalButton';
 import * as ImagePicker from 'expo-image-picker';
 import DropDounProductCreate from '~/components/dropDownProductCreate';
 import DB from '../db';
+import { router } from 'expo-router';
 
 const AddProduct = () => {
   const { userData } = useAuthStore();
   const [productName, setProductName] = useState('');
   const [orderUnit, setOrderUnit] = useState('');
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState<string | null>('');
   const [supplier, setSupplier] = useState('');
   const [category, setCategory] = useState('');
 
-  const saveNewProduct = async () => {
-    //NU FUNCTIONEAZA UPLOADUL PENTR POZA CEL MAI PROBABIL-DE VAZUT https://pocketbase.io/docs/files-handling/
-
-    if (productName && orderUnit && image && supplier && category) {
-      try {
-        const imageResponse = await fetch(image);
-        const blob = await imageResponse.blob();
-
-        const formData = new FormData();
-        formData.append('productName', productName);
-        formData.append('orderUnit', orderUnit);
-        formData.append('supplier', supplier);
-        formData.append('category', category);
-        formData.append('image', blob, `${productName}_image.jpg`);
-
-        // Use the DB instance to create the record
-        const record = await DB.collection('supplies').create(formData);
-        console.log('Record created successfully:', JSON.stringify(record, null, 2));
-      } catch (error: any) {
-        console.error('Error saving product:', JSON.stringify(error, null, 2));
-        alert('Error saving product: ' + error.message); // Show error in alert
-      }
-    } else {
-      alert('Please fill out or select all the options');
-    }
-  };
-
-  const takePhoto = async () => {
-    let result = await ImagePicker.launchCameraAsync({
+  const takePhoto = async (): Promise<void> => {
+    let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       quality: 1,
     });
-    console.log(result);
+    console.log('ImagePickerResult-->', result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+    }
+  };
+
+  const saveNewProduct = async () => {
+    if (productName && orderUnit && supplier && category && image) {
+      try {
+        const formData = new FormData();
+
+        formData.append('name', productName);
+        formData.append('unit', orderUnit);
+        formData.append('supplier', supplier);
+        formData.append('category', category);
+
+        const imageData = {
+          uri: image,
+          type: 'image/*',
+          name: `${productName}_image`,
+        };
+
+        formData.append('image', imageData as unknown as Blob);
+
+        console.log('Form Data-->', JSON.stringify(formData, null, 2));
+
+        // Use the DB instance to create the record
+        const record = await DB.collection('supplies').create(formData);
+        router.push('/(admin)');
+        console.log('Record created successfully:', JSON.stringify(record, null, 2));
+      } catch (error: any) {
+        console.error('Error saving product:', JSON.stringify(error, null, 2));
+        alert('Error saving product: ' + error.message);
+      }
+    } else {
+      alert('Please fill out or select all the options');
     }
   };
 
