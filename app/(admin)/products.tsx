@@ -6,7 +6,7 @@ import { Colors } from '~/assets/styles';
 import { useItemByIdStore } from '~/stores/itemByIdStore';
 import { useSupliesStore } from '~/stores/productListStore';
 
-const Index = () => {
+const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const { getSupplyList, loading, mappedSupplies, uniqueCategories } = useSupliesStore();
   const getItemById = useItemByIdStore((state) => state.getItemById);
@@ -81,7 +81,7 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Products;
 
 const styles = StyleSheet.create({
   container: {

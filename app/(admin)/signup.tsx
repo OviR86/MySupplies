@@ -8,6 +8,7 @@ import DropDownMenu from '~/components/dropDownMenu';
 import useAuthStore from '~/stores/authenticationStore';
 import WithSecureTextToggle from '~/components/withSecureTextToggle';
 import DB from '../db';
+import { router } from 'expo-router';
 
 const Signup = () => {
   const { setUserName, setEmail, setPassword, setRole, role, userName, email, password, userData } =
@@ -31,6 +32,7 @@ const Signup = () => {
         const temporaryRole = capitalise(record.role);
         alert(`New ${temporaryRole} account created.`);
       }
+      router.replace('/(admin)/users');
     } catch (error: any) {
       console.error('Error creating user:', JSON.stringify(error, null, 2));
     } finally {

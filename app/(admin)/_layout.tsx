@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import { router, Slot, Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { HeaderButton } from '~/components/headerButton';
 import { Colors } from '~/assets/styles';
 
@@ -26,10 +26,33 @@ const AuthLayout = () => {
       />
       <Stack.Screen name="editUser" options={{ title: 'Edit user details' }} />
       <Stack.Screen name="addProduct" options={{ title: 'Add new product' }} />
+      <Stack.Screen
+        name="products"
+        options={{
+          title: 'Products',
+          headerRight: () => (
+            <View style={styles.addProductContainer}>
+              <Text style={{ color: Colors.inactiveGray }}>Add product:</Text>
+              <HeaderButton
+                name="plus-square-o"
+                color={Colors.purpleDark}
+                size={30}
+                onPress={() => router.push('/addProduct')}
+              />
+            </View>
+          ),
+        }}
+      />
     </Stack>
   );
 };
 
 export default AuthLayout;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  addProductContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+});

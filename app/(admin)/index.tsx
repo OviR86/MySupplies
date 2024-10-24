@@ -27,15 +27,10 @@ const AdminPannel = () => {
         title="View users"
         style={{ width: '60%' }}
       />
-      <GeneralButton
-        OnPress={() => router.push('/signup')}
-        title="Create user"
-        style={{ width: '60%' }}
-      />
 
       <GeneralButton
-        OnPress={() => router.push('/addProduct')}
-        title="Add new product"
+        OnPress={() => router.push('/products')}
+        title="View products"
         style={{ width: '60%' }}
       />
 

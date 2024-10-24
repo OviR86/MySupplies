@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PocketBase, { AsyncAuthStore } from 'pocketbase';
 
-const url = 'https://bound-lesson.pockethost.io/';
+export const url = 'https://bound-lesson.pockethost.io/';
 
 const store = new AsyncAuthStore({
   save: async (serialized) => {
