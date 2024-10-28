@@ -1,11 +1,13 @@
 import { Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Dimensions } from 'react-native';
 import GeneralButton from './generalButton';
 import BottomSheet from './bottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { customElevation } from '~/assets/styles';
 import { capitalise } from '~/assets/helpers';
+import useAuthStore from '~/stores/authenticationStore';
+import { useItemByIdStore } from '~/stores/itemByIdStore';
 const screenWidth = Dimensions.get('window').width;
 
 export type ListItemType = {
@@ -16,9 +18,12 @@ export type ListItemType = {
 
 const ListItem = (props: ListItemType) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-
+  const { userData } = useAuthStore();
   const handlePress = () => {
     bottomSheetRef.current?.present();
+    props.setOrderItem();
+  };
+  const handleOpenDetails = () => {
     props.setOrderItem();
   };
 
@@ -43,7 +48,11 @@ const ListItem = (props: ListItemType) => {
           <Text numberOfLines={2} style={styles.titleText}>
             {capitalise(props.name)}
           </Text>
-          <GeneralButton OnPress={() => handlePress()} title="Order" />
+          {userData?.role === 'admin' ? (
+            <GeneralButton OnPress={() => handleOpenDetails()} title="Details" />
+          ) : (
+            <GeneralButton OnPress={() => handlePress()} title="Order" />
+          )}
         </View>
       </View>
     </View>

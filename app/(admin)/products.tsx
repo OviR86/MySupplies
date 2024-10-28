@@ -5,6 +5,7 @@ import CategoryButton from '~/components/categoryButton';
 import { Colors } from '~/assets/styles';
 import { useItemByIdStore } from '~/stores/itemByIdStore';
 import { useSupliesStore } from '~/stores/productListStore';
+import { router } from 'expo-router';
 
 const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -69,7 +70,10 @@ const Products = () => {
                 <ListItem
                   name={item.name}
                   image={{ uri: item.image }}
-                  setOrderItem={() => getItemById(item.id, mappedSupplies)}
+                  setOrderItem={() => {
+                    getItemById(item.id, mappedSupplies);
+                    router.push('/productDetails');
+                  }}
                 />
               );
             }}
