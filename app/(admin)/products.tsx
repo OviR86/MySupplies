@@ -1,11 +1,11 @@
 import { ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ListItem from '~/components/listItem';
 import CategoryButton from '~/components/categoryButton';
 import { Colors } from '~/assets/styles';
 import { useItemByIdStore } from '~/stores/itemByIdStore';
 import { useSupliesStore } from '~/stores/productListStore';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 
 const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -13,9 +13,15 @@ const Products = () => {
   const getItemById = useItemByIdStore((state) => state.getItemById);
 
   //GET LIST FROM POCKETBASE DB
-  useEffect(() => {
-    getSupplyList();
-  }, []);
+  // useEffect(() => {
+  //   getSupplyList();
+  // }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      getSupplyList();
+    }, [])
+  );
 
   //CATEGORY BUTTONS FUNCTIONALITY-RADIO BUTTON STYLE
   const handlecategoryPress = (category: string) => {

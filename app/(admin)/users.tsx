@@ -54,9 +54,14 @@ const Users = () => {
   }, []);
 
   const openDeleteSheet = (id: string, name: string) => {
-    setSelectedUser({ id, name }); // Store the user to be deleted
-    bottomSheetRef.current?.present(); // Open the bottom sheet
+    setSelectedUser({ id, name });
   };
+
+  useEffect(() => {
+    if (selectedUser) {
+      bottomSheetRef.current?.present();
+    }
+  }, [selectedUser]);
 
   const deleteUser = async (id: string, name: string) => {
     try {
