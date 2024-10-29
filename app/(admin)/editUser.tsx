@@ -11,6 +11,15 @@ import { router } from 'expo-router';
 const EditUser = () => {
   const { setUserName, setEmail, setRole, role, userName, email, userData, id } = useAuthStore();
 
+  useEffect(() => {
+    //THIS CLEANS UP THE STATE IN CASE YOU PRESS TRHE EDIT BUTTON ON A USER CARD BEFORE PRESSING THE ADD USER BUTTON
+    return () => {
+      setUserName('');
+      setEmail('');
+      setRole('');
+    };
+  }, []);
+
   const saveEdit = async () => {
     const data = {
       username: userName,

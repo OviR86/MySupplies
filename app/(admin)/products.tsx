@@ -1,5 +1,5 @@
 import { ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import ListItem from '~/components/listItem';
 import CategoryButton from '~/components/categoryButton';
 import { Colors } from '~/assets/styles';

@@ -19,7 +19,7 @@ const AuthLayout = () => {
               name="user-plus"
               color={Colors.purpleDark}
               size={23}
-              onPress={() => router.replace('/signup')}
+              onPress={() => router.push('/signup')}
             />
           ),
         }}
