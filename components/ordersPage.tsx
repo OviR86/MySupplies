@@ -7,6 +7,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { customElevation } from '~/assets/styles';
 import useAuthStore from '~/stores/authenticationStore';
 import DB from '~/app/db';
+import OrderListItem from './orderListItem';
 
 const Orders = () => {
   const [loading, setLoading] = useState(false);
@@ -62,41 +63,7 @@ const Orders = () => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.listContainer}
             data={orders}
-            renderItem={({ item }) => {
-              return (
-                <View style={[styles.itemContainer, customElevation]}>
-                  <View style={{ height: '100%', justifyContent: 'space-evenly' }}>
-                    <Text style={{ fontWeight: 'bold' }}>
-                      Order ID: {item.id.slice(0, 8).toUpperCase()}
-                    </Text>
-                    <Text style={{ marginTop: -16 }}>{formatDate(item.created)}</Text>
-                    <Text>
-                      Status:{' '}
-                      <Text
-                        style={{
-                          color: statusColors[item.status],
-                          fontWeight: 'bold',
-                        }}>
-                        {capitalise(item.status)}
-                      </Text>
-                    </Text>
-                  </View>
-                  <ScrollView
-                    contentContainerStyle={{
-                      alignItems: 'flex-end',
-                      justifyContent: 'space-between',
-                    }}>
-                    {item.items.map((item: any, index: any) => {
-                      return (
-                        <Text key={index} numberOfLines={1} style={{ alignSelf: 'center' }}>
-                          {capitalise(item.name)}
-                        </Text>
-                      );
-                    })}
-                  </ScrollView>
-                </View>
-              );
-            }}
+            renderItem={({ item }) => <OrderListItem item={item} statusColors={statusColors} />}
           />
         </>
       )}

@@ -83,7 +83,7 @@ const Users = () => {
     setEmail(user.email);
     setRole(user.role);
 
-    router.push('/(admin)/editUser');
+    router.push('/editUser');
   };
 
   return (

@@ -7,6 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import PocketBase, { AsyncAuthStore, RecordAuthResponse } from 'pocketbase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useAuthStore from '~/stores/authenticationStore';
+import DB from '~/app/db';
 
 const url = 'https://bound-lesson.pockethost.io/';
 
