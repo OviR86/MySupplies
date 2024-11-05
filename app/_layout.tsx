@@ -1,40 +1,23 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { Href, Stack, useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { SafeAreaView } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import PocketBase, { AsyncAuthStore, RecordAuthResponse } from 'pocketbase';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import useAuthStore from '~/stores/authenticationStore';
 import DB from '~/app/db';
 
-const url = 'https://bound-lesson.pockethost.io/';
-
-const store = new AsyncAuthStore({
-  save: async (serialized) => {
-    console.log('token=====>', serialized);
-    AsyncStorage.setItem('pb_auth', serialized);
-  },
-  initial: AsyncStorage.getItem('pb_auth'),
-});
-
-const client = new PocketBase(url, store);
-client.autoCancellation(false);
 export default function Layout() {
   const router = useRouter();
-  const { setUserData } = useAuthStore();
+  const { setUserData, userData } = useAuthStore();
 
   useEffect(() => {
     const checkAuth = async () => {
-      console.log(
-        'Main _layout file: checkAuth-client.authStore.isValid-->',
-        client.authStore.isValid
-      );
+      console.log('Main _layout file: checkAuth-client.authStore.isValid-->', DB.authStore.isValid);
 
-      const isValidAuth = client.authStore.isValid;
+      const isValidAuth = DB.authStore.isValid;
       if (isValidAuth) {
-        const user = client.authStore.model;
+        const user = DB.authStore.model;
         setUserData({
           userName: user?.username,
           email: user?.email,
@@ -42,7 +25,7 @@ export default function Layout() {
           id: user?.id,
         });
       }
-      const userRole = client.authStore.model?.role;
+      const userRole = userData?.role;
 
       if (isValidAuth && userRole) {
         // User is authenticated, route based on their role
