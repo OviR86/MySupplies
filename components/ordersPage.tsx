@@ -1,10 +1,8 @@
-import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, FlatList, StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import PocketBase, { RecordModel } from 'pocketbase';
-import { Colors } from '~/assets/styles';
-import { capitalise, formatDate } from '~/assets/helpers';
-import { ScrollView } from 'react-native-gesture-handler';
-import { customElevation } from '~/assets/styles';
+import { RecordModel } from 'pocketbase';
+import { Colors, statusColors } from '~/assets/styles';
+
 import useAuthStore from '~/stores/authenticationStore';
 import DB from '~/app/db';
 import OrderListItem from './orderListItem';
@@ -13,13 +11,6 @@ const Orders = () => {
   const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState<RecordModel[]>([]);
   const { userData } = useAuthStore();
-
-  const statusColors: Record<string, string> = {
-    new: Colors.lightBlue,
-    processing: Colors.purpleMid,
-    sent: 'green',
-    cancelled: 'red',
-  };
 
   const getOrdersFromPocketbase = async () => {
     console.log('getOrdersFromPocketbase role--->', userData?.role);

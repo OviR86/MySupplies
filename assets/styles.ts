@@ -2,12 +2,12 @@ export const customElevation = {
   shadowColor: '#000',
   shadowOffset: {
     width: 0,
-    height: 3,
+    height: 1,
   },
-  shadowOpacity: 0.29,
-  shadowRadius: 4.65,
+  shadowOpacity: 0.22,
+  shadowRadius: 2.22,
 
-  elevation: 7,
+  elevation: 3,
 };
 
 export const Colors = {
@@ -17,4 +17,12 @@ export const Colors = {
   lightBlue: '#05fbfb',
   blueGray: '#b7ecf1',
   inactiveGray: '#b9b7bd',
+  darkGray: '#4A4A4A',
+};
+
+export const statusColors: Record<string, string> = {
+  new: Colors.lightBlue,
+  processing: Colors.purpleMid,
+  sent: 'green',
+  cancelled: 'red',
 };

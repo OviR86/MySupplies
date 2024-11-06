@@ -3,6 +3,8 @@ import React from 'react';
 import { Colors, customElevation } from '~/assets/styles';
 import { capitalise, formatDate } from '~/assets/helpers';
 import { RecordModel } from 'pocketbase';
+import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
+import { useRouter } from 'expo-router';
 
 type OrderListItemType = {
   item: RecordModel;
@@ -10,6 +12,8 @@ type OrderListItemType = {
 };
 
 const OrderListItem = ({ item, statusColors }: OrderListItemType) => {
+  const router = useRouter();
+
   return (
     <View style={[styles.itemContainer, customElevation]}>
       <View style={{ height: '100%', justifyContent: 'space-evenly' }}>
@@ -27,6 +31,7 @@ const OrderListItem = ({ item, statusColors }: OrderListItemType) => {
         </Text>
       </View>
       <ScrollView
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           alignItems: 'flex-end',
           justifyContent: 'space-between',
@@ -39,6 +44,18 @@ const OrderListItem = ({ item, statusColors }: OrderListItemType) => {
           );
         })}
       </ScrollView>
+      <SimpleLineIcons
+        name="arrow-right"
+        size={35}
+        color={Colors.purpleDark}
+        style={{ marginRight: 3 }}
+        onPress={() => {
+          router.push({
+            pathname: '/orderDetails',
+            params: { orderId: item.id },
+          });
+        }}
+      />
     </View>
   );
 };

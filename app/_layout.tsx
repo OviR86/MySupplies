@@ -18,6 +18,7 @@ export default function Layout() {
       const isValidAuth = DB.authStore.isValid;
       if (isValidAuth) {
         const user = DB.authStore.model;
+
         setUserData({
           userName: user?.username,
           email: user?.email,
@@ -25,7 +26,7 @@ export default function Layout() {
           id: user?.id,
         });
       }
-      const userRole = userData?.role;
+      const userRole = DB.authStore.model?.role;
 
       if (isValidAuth && userRole) {
         // User is authenticated, route based on their role
@@ -56,6 +57,13 @@ export default function Layout() {
             <Stack.Screen name="(auth)" />
             <Stack.Screen name="(supplier)" />
             <Stack.Screen name="(store)" />
+            <Stack.Screen
+              name="orderDetails"
+              options={{
+                headerShown: true,
+                title: 'Order details',
+              }}
+            />
           </Stack>
           <StatusBar style="auto" />
         </SafeAreaView>
