@@ -1,15 +1,30 @@
-import { ActivityIndicator, FlatList, StyleSheet, Text, View, Image } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import DB from './db';
 import { RecordModel } from 'pocketbase';
 import { Colors, customElevation, statusColors } from '~/assets/styles';
 import { capitalise, formatDate } from '~/assets/helpers';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import StatusChangeBottomSheet from '~/components/statusChangeBottomSheet';
 
 const OrderDetails = () => {
   const { orderId } = useLocalSearchParams();
   const [order, setOrder] = useState<RecordModel | null>(null);
   const [loading, setLoading] = useState(false);
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const handleStatusPress = () => {
+    bottomSheetRef.current?.present();
+  };
 
   const fetchOrder = async () => {
     try {
@@ -28,7 +43,11 @@ const OrderDetails = () => {
     }
   }, [orderId]);
   if (loading) {
-    return <ActivityIndicator color={Colors.purpleDark} size="large" />;
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator color={Colors.purpleDark} size="large" />
+      </View>
+    );
   }
 
   if (!order) {
@@ -37,6 +56,7 @@ const OrderDetails = () => {
 
   return (
     <View style={styles.container}>
+      <StatusChangeBottomSheet ref={bottomSheetRef} />
       <View style={styles.orderDetailsText}>
         <Text style={styles.orderText}>
           Order ID:{' '}
@@ -51,24 +71,24 @@ const OrderDetails = () => {
           </Text>
         </Text>
       </View>
-      <View style={styles.orderDetailsText}>
-        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={styles.orderText}>Status: </Text>
-          <View
-            style={[{ backgroundColor: 'white', padding: 7, borderRadius: 5 }, customElevation]}>
-            <Text style={{ color: statusColors[order.status], fontSize: 14 }}>
-              {capitalise(order.status)}
-            </Text>
-          </View>
-        </View>
-        <Text style={[styles.orderText, { flex: 1 }]}>
-          Deliver to:{' '}
-          <Text
-            numberOfLines={5}
-            style={[styles.orderText, { fontWeight: 'bold', textAlign: 'right' }]}>
-            {order.user}
-          </Text>
+
+      <Text
+        numberOfLines={3}
+        style={[styles.orderText, { alignSelf: 'flex-start', marginLeft: 7 }]}>
+        Deliver to:{' '}
+        <Text style={[styles.orderText, { fontWeight: 'bold', textAlign: 'right' }]}>
+          {order.user}
         </Text>
+      </Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={styles.orderText}>Status: </Text>
+        <TouchableOpacity
+          onPress={() => handleStatusPress()}
+          style={[{ backgroundColor: 'white', padding: 7, borderRadius: 5 }, customElevation]}>
+          <Text style={{ color: statusColors[order.status], fontSize: 14 }}>
+            {capitalise(order.status)}
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <Text style={styles.sectionHeader}>Products:</Text>
